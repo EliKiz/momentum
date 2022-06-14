@@ -4,7 +4,7 @@
         const nowHourse = date.getHours();
         // const nowMinutes = date.getMinutes();
 
-        console.log(nowHourse);
+        // console.log(nowHourse);
         // console.log(nowMinutes);
 
         if(nowHourse >= 6 && nowHourse < 12 ) { 

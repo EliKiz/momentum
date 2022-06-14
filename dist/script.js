@@ -4010,8 +4010,8 @@ __webpack_require__.r(__webpack_exports__);
 function getTimeOfDay() {
   var date = new Date();
   var nowHourse = date.getHours(); // const nowMinutes = date.getMinutes();
-
-  console.log(nowHourse); // console.log(nowMinutes);
+  // console.log(nowHourse);
+  // console.log(nowMinutes);
 
   if (nowHourse >= 6 && nowHourse < 12) {
     return 'morning';
@@ -4078,9 +4078,7 @@ var slider = function slider() {
   }
 
   function setBg() {
-    var timeOfDay = Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])(); // let bgNum = getRandomNum();
-
-    console.log(Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])());
+    var timeOfDay = Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])();
     var img = new Image();
     img.src = "/assets/img/bg.jpg";
 
@@ -4093,7 +4091,7 @@ var slider = function slider() {
 
   function getSlideNext() {
     if (randomNum < 20) {
-      randomNum += 1;
+      console.log(randomNum += 1);
     } else {
       randomNum = 1;
     }
@@ -4103,7 +4101,7 @@ var slider = function slider() {
 
   function getSlidePrev() {
     if (randomNum > 1) {
-      randomNum -= 1;
+      console.log(randomNum -= 1);
     } else {
       randomNum = 20;
     }
@@ -4181,29 +4179,43 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var weather = function weather() {
+  var weatherIcon = document.querySelector('.weather-icon'),
+      temperature = document.querySelector('.temperature'),
+      weatherDescr = document.querySelector('.weather-description'),
+      city = document.querySelector('.city');
+
   function getWeather() {
-    var url, res, data;
+    var city,
+        url,
+        res,
+        data,
+        _args = arguments;
     return regeneratorRuntime.async(function getWeather$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            url = "https://api.openweathermap.org/data/2.5/weather?q=\u041C\u0438\u043D\u0441\u043A&lang=ru&appid=08f2a575dda978b9c539199e54df03b0&units=metric";
-            _context.next = 3;
+            city = _args.length > 0 && _args[0] !== undefined ? _args[0] : 'Москва';
+            url = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, "&lang=ru&appid=cda9512bfea66fa281c436745191bac0&units=metric");
+            _context.next = 4;
             return regeneratorRuntime.awrap(fetch(url));
 
-          case 3:
+          case 4:
             res = _context.sent;
-            _context.next = 6;
+            _context.next = 7;
             return regeneratorRuntime.awrap(res.json());
 
-          case 6:
+          case 7:
             data = _context.sent;
             console.log(data.weather[0].id, // icon 
             data.weather[0].description, // descr
-            data.main.temp // temp
+            Math.round(data.main.temp) // temp
             );
+            weatherIcon.className = 'weather-icon owf';
+            weatherIcon.classList.add("owf-".concat(data.weather[0].id));
+            temperature.textContent = "".concat(Math.round(data.main.temp), " \xB0C");
+            weatherDescr.textContent = "".concat(data.weather[0].description);
 
-          case 8:
+          case 13:
           case "end":
             return _context.stop();
         }
@@ -4212,6 +4224,15 @@ var weather = function weather() {
   }
 
   getWeather();
+
+  function getWeatherCity() {
+    city.addEventListener('change', function () {
+      console.log(city.value);
+      getWeather(city.value);
+    });
+  }
+
+  getWeatherCity();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (weather); // cda9512bfea66fa281c436745191bac0

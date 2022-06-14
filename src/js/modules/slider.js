@@ -9,7 +9,7 @@ const slider = () => {
 
     let randomNum = getRandomNum();
 
-console.log(randomNum);
+    console.log(randomNum);
 
     function getRandomNum() { 
         return Math.round(Math.random() * 20);
@@ -17,8 +17,6 @@ console.log(randomNum);
     
     function setBg() { 
         let timeOfDay  = getTimeOfDay();
-        // let bgNum = getRandomNum();
-        console.log(getTimeOfDay());
        
         const img = new Image();
         img.src = "/assets/img/bg.jpg";
@@ -31,7 +29,7 @@ console.log(randomNum);
 
     function getSlideNext() { 
         if(randomNum < 20) { 
-            randomNum += 1;
+            console.log(randomNum += 1) ;
         } else { 
             randomNum = 1;
         }
@@ -39,7 +37,7 @@ console.log(randomNum);
     }
     function getSlidePrev() { 
         if(randomNum > 1) { 
-            randomNum -= 1;
+            console.log(randomNum -= 1);
         } else { 
             randomNum = 20;
         }
