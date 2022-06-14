@@ -7,12 +7,12 @@ const slider = () => {
     
 
 
-    let randomNum = getRandomNum();
+    let randomNum = getRandomNum(10, 20);
 
     console.log(randomNum);
 
-    function getRandomNum() { 
-        return Math.round(Math.random() * 20);
+    function getRandomNum(min, max) { 
+        return Math.round(Math.random() * (max-min) + min);
     }
     
     function setBg() { 
@@ -21,6 +21,7 @@ const slider = () => {
         const img = new Image();
         img.src = "/assets/img/bg.jpg";
         img.onload = () => { 
+            body.style.backgroundColor = 'rgba(0,0,0, .5)';
             body.style.backgroundImage = `url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${randomNum}.jpg')`;
         };
 
@@ -31,12 +32,15 @@ const slider = () => {
         if(randomNum < 20) { 
             console.log(randomNum += 1) ;
         } else { 
-            randomNum = 1;
+            randomNum = 10;
         }
         setBg();
     }
+
+    // setInterval(getSlideNext, 5000);
+
     function getSlidePrev() { 
-        if(randomNum > 1) { 
+        if(randomNum > 10) { 
             console.log(randomNum -= 1);
         } else { 
             randomNum = 20;

@@ -3982,6 +3982,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_hi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/hi */ "./src/js/modules/hi.js");
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
 /* harmony import */ var _modules_weather__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/weather */ "./src/js/modules/weather.js");
+/* harmony import */ var _modules_quote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/quote */ "./src/js/modules/quote.js");
+
 
 
 
@@ -3993,6 +3995,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_slider__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_weather__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  Object(_modules_quote__WEBPACK_IMPORTED_MODULE_4__["default"])();
 });
 
 /***/ }),
@@ -4051,6 +4054,74 @@ var sayHi = function sayHi() {
 
 /***/ }),
 
+/***/ "./src/js/modules/quote.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/quote.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var quote = function quote() {
+  var quote = document.querySelector('.quote'),
+      author = document.querySelector('.author'),
+      changeQuote = document.querySelector('.change-quote');
+
+  function getQuotes() {
+    var quotes, res, data, showQuotes;
+    return regeneratorRuntime.async(function getQuotes$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            showQuotes = function _ref() {
+              var random = Math.round(Math.random() * 2);
+              var arr = data[random];
+              quote.textContent = arr.text;
+              author.textContent = arr.author;
+            };
+
+            quotes = 'data.json';
+            _context.next = 4;
+            return regeneratorRuntime.awrap(fetch(quotes));
+
+          case 4:
+            res = _context.sent;
+            _context.next = 7;
+            return regeneratorRuntime.awrap(res.json());
+
+          case 7:
+            data = _context.sent;
+            showQuotes();
+            changeQuote.addEventListener('click', function () {
+              showQuotes();
+            });
+
+          case 10:
+          case "end":
+            return _context.stop();
+        }
+      }
+    });
+  }
+
+  getQuotes();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (quote);
+
+/***/ }),
+
 /***/ "./src/js/modules/slider.js":
 /*!**********************************!*\
   !*** ./src/js/modules/slider.js ***!
@@ -4070,11 +4141,11 @@ var slider = function slider() {
   var body = document.querySelector('.body-slide'),
       prevBtn = document.querySelector('.slide-prev'),
       nextBtn = document.querySelector('.slide-next');
-  var randomNum = getRandomNum();
+  var randomNum = getRandomNum(10, 20);
   console.log(randomNum);
 
-  function getRandomNum() {
-    return Math.round(Math.random() * 20);
+  function getRandomNum(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
   }
 
   function setBg() {
@@ -4083,6 +4154,7 @@ var slider = function slider() {
     img.src = "/assets/img/bg.jpg";
 
     img.onload = function () {
+      body.style.backgroundColor = 'rgba(0,0,0, .5)';
       body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/".concat(timeOfDay, "/").concat(randomNum, ".jpg')");
     };
   }
@@ -4093,14 +4165,15 @@ var slider = function slider() {
     if (randomNum < 20) {
       console.log(randomNum += 1);
     } else {
-      randomNum = 1;
+      randomNum = 10;
     }
 
     setBg();
-  }
+  } // setInterval(getSlideNext, 5000);
+
 
   function getSlidePrev() {
-    if (randomNum > 1) {
+    if (randomNum > 10) {
       console.log(randomNum -= 1);
     } else {
       randomNum = 20;
