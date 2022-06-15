@@ -136,6 +136,27 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/array-for-each.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/array-for-each.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $forEach = __webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").forEach;
+var sloppyArrayMethod = __webpack_require__(/*! ../internals/sloppy-array-method */ "./node_modules/core-js/internals/sloppy-array-method.js");
+
+// `Array.prototype.forEach` method implementation
+// https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+module.exports = sloppyArrayMethod('forEach') ? function forEach(callbackfn /* , thisArg */) {
+  return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+} : [].forEach;
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/array-includes.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/internals/array-includes.js ***!
@@ -619,6 +640,52 @@ var EXISTS = isObject(document) && isObject(document.createElement);
 
 module.exports = function (it) {
   return EXISTS ? document.createElement(it) : {};
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/dom-iterables.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/dom-iterables.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// iterable DOM collections
+// flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+module.exports = {
+  CSSRuleList: 0,
+  CSSStyleDeclaration: 0,
+  CSSValueList: 0,
+  ClientRectList: 0,
+  DOMRectList: 0,
+  DOMStringList: 0,
+  DOMTokenList: 1,
+  DataTransferItemList: 0,
+  FileList: 0,
+  HTMLAllCollection: 0,
+  HTMLCollection: 0,
+  HTMLFormElement: 0,
+  HTMLSelectElement: 0,
+  MediaList: 0,
+  MimeTypeArray: 0,
+  NamedNodeMap: 0,
+  NodeList: 1,
+  PaintRequestList: 0,
+  Plugin: 0,
+  PluginArray: 0,
+  SVGLengthList: 0,
+  SVGNumberList: 0,
+  SVGPathSegList: 0,
+  SVGPointList: 0,
+  SVGStringList: 0,
+  SVGTransformList: 0,
+  SourceBufferList: 0,
+  StyleSheetList: 0,
+  TextTrackCueList: 0,
+  TextTrackList: 0,
+  TouchList: 0
 };
 
 
@@ -1625,6 +1692,49 @@ exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/object-to-array.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/internals/object-to-array.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
+var objectKeys = __webpack_require__(/*! ../internals/object-keys */ "./node_modules/core-js/internals/object-keys.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js/internals/to-indexed-object.js");
+var propertyIsEnumerable = __webpack_require__(/*! ../internals/object-property-is-enumerable */ "./node_modules/core-js/internals/object-property-is-enumerable.js").f;
+
+// `Object.{ entries, values }` methods implementation
+var createMethod = function (TO_ENTRIES) {
+  return function (it) {
+    var O = toIndexedObject(it);
+    var keys = objectKeys(O);
+    var length = keys.length;
+    var i = 0;
+    var result = [];
+    var key;
+    while (length > i) {
+      key = keys[i++];
+      if (!DESCRIPTORS || propertyIsEnumerable.call(O, key)) {
+        result.push(TO_ENTRIES ? [key, O[key]] : O[key]);
+      }
+    }
+    return result;
+  };
+};
+
+module.exports = {
+  // `Object.entries` method
+  // https://tc39.github.io/ecma262/#sec-object.entries
+  entries: createMethod(true),
+  // `Object.values` method
+  // https://tc39.github.io/ecma262/#sec-object.values
+  values: createMethod(false)
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/object-to-string.js":
 /*!************************************************************!*\
   !*** ./node_modules/core-js/internals/object-to-string.js ***!
@@ -1930,6 +2040,28 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "./node_modules
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/sloppy-array-method.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/core-js/internals/sloppy-array-method.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
+
+module.exports = function (METHOD_NAME, argument) {
+  var method = [][METHOD_NAME];
+  return !method || !fails(function () {
+    // eslint-disable-next-line no-useless-call,no-throw-literal
+    method.call(null, argument || function () { throw 1; }, 1);
+  });
+};
 
 
 /***/ }),
@@ -2400,6 +2532,27 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
     }
     A.length = n;
     return A;
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.object.entries.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.object.entries.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $entries = __webpack_require__(/*! ../internals/object-to-array */ "./node_modules/core-js/internals/object-to-array.js").entries;
+
+// `Object.entries` method
+// https://tc39.github.io/ecma262/#sec-object.entries
+$({ target: 'Object', stat: true }, {
+  entries: function entries(O) {
+    return $entries(O);
   }
 });
 
@@ -3200,6 +3353,32 @@ hiddenKeys[HIDDEN] = true;
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/web.dom-collections.for-each.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/core-js/modules/web.dom-collections.for-each.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var DOMIterables = __webpack_require__(/*! ../internals/dom-iterables */ "./node_modules/core-js/internals/dom-iterables.js");
+var forEach = __webpack_require__(/*! ../internals/array-for-each */ "./node_modules/core-js/internals/array-for-each.js");
+var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
+
+for (var COLLECTION_NAME in DOMIterables) {
+  var Collection = global[COLLECTION_NAME];
+  var CollectionPrototype = Collection && Collection.prototype;
+  // some Chrome versions have non-configurable methods on DOMTokenList
+  if (CollectionPrototype && CollectionPrototype.forEach !== forEach) try {
+    createNonEnumerableProperty(CollectionPrototype, 'forEach', forEach);
+  } catch (error) {
+    CollectionPrototype.forEach = forEach;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/regenerator-runtime/runtime.js":
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
@@ -3983,10 +4162,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
 /* harmony import */ var _modules_weather__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/weather */ "./src/js/modules/weather.js");
 /* harmony import */ var _modules_quote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/quote */ "./src/js/modules/quote.js");
+/* harmony import */ var _modules_audio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/audio */ "./src/js/modules/audio.js");
 
 
 
 
+
+ // import playList from './modules/playList';
 
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
@@ -3996,7 +4178,126 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_slider__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_weather__WEBPACK_IMPORTED_MODULE_3__["default"])();
   Object(_modules_quote__WEBPACK_IMPORTED_MODULE_4__["default"])();
+  Object(_modules_audio__WEBPACK_IMPORTED_MODULE_5__["default"])(); // playList();
+  // console.log(playList());
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/audio.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/audio.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _playList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./playList */ "./src/js/modules/playList.js");
+
+
+
+var audio = function audio() {
+  var audio = document.querySelector('.audio'),
+      player = document.querySelector('.player'),
+      playBtn = document.querySelector('.play '),
+      prevBtn = document.querySelector('.play-prev'),
+      nextBtn = document.querySelector('.play-next'),
+      songsList = document.querySelector('.play-list');
+  var randomNum;
+  var playNum = localStorage.getItem('selected song');
+  var isPlay = false;
+  var currentSong = _playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum]; //   if(localStorage.getItem('selected song')) { 
+  //     playNum = 'selected song';
+  //   }
+  // console.log() ;
+  // console.log(playList);
+
+  function playAudio() {
+    // audio.src = 'https://7oom.ru/audio/naturesounds/07%20Birds%20(7oom.ru).mp3';
+    audio.src = _playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum].src; // audio.currentTime = 0;
+    // audio.muted();
+
+    audio.volume = .11;
+
+    if (!isPlay) {
+      isPlay = true;
+      audio.play();
+      playBtn.classList.toggle('pause');
+    } else {
+      isPlay = false;
+      audio.pause();
+      playBtn.classList.toggle('pause');
+    }
+  }
+
+  function playNext() {
+    playNum += 1;
+
+    if (playNum >= _playList__WEBPACK_IMPORTED_MODULE_1__["default"].length) {
+      playNum = 0;
+    }
+
+    playAudio();
+    console.log(playNum);
+    localStorage.setItem('selected song', playNum);
+  }
+
+  console.log("playList is ".concat(_playList__WEBPACK_IMPORTED_MODULE_1__["default"].length));
+
+  function playPrev() {
+    playNum -= 1;
+
+    if (playNum < 0) {
+      playNum = 0;
+    }
+
+    console.log(playNum);
+    playAudio();
+    localStorage.setItem('selected song', playNum);
+  }
+
+  function toggleBtn() {
+    playBtn.classList.toggle('pause');
+  }
+
+  function createPlaylist() {
+    _playList__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(function (item) {
+      // console.log(item);
+      var li = document.createElement('li');
+      li.classList.add('play-item');
+      li.textContent = item.title;
+      songsList.append(li);
+
+      if (_playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum].title == item.title) {
+        console.log('das');
+        li.style.opacity = '1';
+      }
+    });
+  }
+
+  createPlaylist(); //click volume slider to change volume
+
+  var timeline = player.querySelector(".timeline");
+  timeline.addEventListener("click", function (e) {
+    var timelineWidth = window.getComputedStyle(timeline).width;
+    var timeToSeek = e.offsetX / parseInt(timelineWidth) * audio.duration;
+    audio.currentTime = timeToSeek;
+  }, false); //check audio percentage and update time accordingly
+
+  setInterval(function () {
+    var progressBar = player.querySelector(".progress");
+    progressBar.style.width = audio.currentTime / audio.duration * 100 + "%";
+    player.querySelector(".time .current").textContent = getTimeCodeFromNum(audio.currentTime);
+  }, 500);
+  playBtn.addEventListener('click', playAudio);
+  prevBtn.addEventListener('click', playPrev);
+  nextBtn.addEventListener('click', playNext); //    playBtn.addEventListener('click', toggleBtn);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (audio);
 
 /***/ }),
 
@@ -4054,6 +4355,36 @@ var sayHi = function sayHi() {
 
 /***/ }),
 
+/***/ "./src/js/modules/playList.js":
+/*!************************************!*\
+  !*** ./src/js/modules/playList.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var playList = [{
+  title: 'Aqua Caelestis',
+  src: '../assets/sounds/Aqua Caelestis.mp3',
+  duration: '00:58'
+}, {
+  title: 'River Flows In You',
+  src: '../assets/sounds/River Flows In You.mp3',
+  duration: '03:50'
+}, {
+  title: 'Ennio Morricone',
+  src: '../assets/sounds/Ennio Morricone.mp3',
+  duration: '03:50'
+}, {
+  title: 'Summer Wind',
+  src: '../assets/sounds/Summer Wind.mp3',
+  duration: '03:50'
+}];
+/* harmony default export */ __webpack_exports__["default"] = (playList);
+
+/***/ }),
+
 /***/ "./src/js/modules/quote.js":
 /*!*********************************!*\
   !*** ./src/js/modules/quote.js ***!
@@ -4063,12 +4394,15 @@ var sayHi = function sayHi() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.entries */ "./node_modules/core-js/modules/es.object.entries.js");
+/* harmony import */ var core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_entries__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -4085,10 +4419,11 @@ var quote = function quote() {
         switch (_context.prev = _context.next) {
           case 0:
             showQuotes = function _ref() {
-              var random = Math.round(Math.random() * 2);
-              var arr = data[random];
-              quote.textContent = arr.text;
-              author.textContent = arr.author;
+              var arr = Object.entries(data).length - 1;
+              var random = Math.round(Math.random() * arr);
+              console.log(random);
+              quote.textContent = data[random].text;
+              author.textContent = data[random].author;
             };
 
             quotes = 'data.json';
