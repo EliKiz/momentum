@@ -1,13 +1,14 @@
-const quote = () => { 
-
-    const quote = document.querySelector('.quote'),
-    author = document.querySelector('.author'),
-    changeQuote = document.querySelector('.change-quote');
+// const quote = () => { 
 
     
-    async function getQuotes() { 
+    
+    async function getQuotes(quotests) { 
         
-        const quotes = 'data.json';
+        const quote = document.querySelector('.quote'),
+        author = document.querySelector('.author'),
+        changeQuote = document.querySelector('.change-quote');
+        
+        const quotes = quotests;
         const res = await fetch(quotes);
         const data = await res.json();
         
@@ -36,9 +37,8 @@ const quote = () => {
         });
 
     }
-    getQuotes();
+    getQuotes('dataRU.json');
 
-   
 
-};
-export default quote;
+// };
+export default getQuotes;

@@ -1,13 +1,11 @@
-const weather = () => { 
     const weatherIcon = document.querySelector('.weather-icon'),
-        temperature = document.querySelector('.temperature'),
-        weatherDescr = document.querySelector('.weather-description'),
-        city = document.querySelector('.city');
+    temperature = document.querySelector('.temperature'),
+    weatherDescr = document.querySelector('.weather-description'),
+    city = document.querySelector('.city');
 
-        
-    async function getWeather(city = 'Москва') { 
+    async function getWeather(language, city = 'Москва', ) { 
 
-       let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ru&appid=cda9512bfea66fa281c436745191bac0&units=metric`;
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&appid=cda9512bfea66fa281c436745191bac0&units=metric`;
         const res = await fetch(url);
         const data = await res.json();
         
@@ -24,16 +22,21 @@ const weather = () => {
         weatherDescr.textContent = `${data.weather[0].description}`;
 
     }
-    getWeather();
+    
+const weather = () => { 
+        
+    getWeather('ru');
+        
     function getWeatherCity() { 
         city.addEventListener('change', () => { 
             console.log(city.value);
-            getWeather(city.value);
+            getWeather('ru',city.value);
         });
     }
     getWeatherCity();
 
 };
+export {getWeather};
 export default weather;
 
 

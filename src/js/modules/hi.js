@@ -8,13 +8,13 @@
         // console.log(nowMinutes);
 
         if(nowHourse >= 6 && nowHourse < 12 ) { 
-            return 'morning';
+            return 'Доброе утро,';
         } else if ( nowHourse >= 12 && nowHourse < 18 ) { 
-            return 'afternoon';
+            return 'Добрый день,';
         } else if ( nowHourse >= 18 && nowHourse < 24) { 
-            return 'evening';
+            return 'Добрый вечер,';
         } else if ( nowHourse >= 0 && nowHourse < 6)  {
-            return 'night';
+            return 'Доброй ночь,';
         }
         
     }
@@ -26,7 +26,7 @@ const sayHi = () => {
    
     
     const timeOfDay = getTimeOfDay();
-    const greetingText = `Good ${timeOfDay},`;
+    const greetingText = timeOfDay;
     greeting.innerHTML = greetingText;
 
     // console.log(user.value);

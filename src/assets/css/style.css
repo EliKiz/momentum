@@ -131,6 +131,13 @@ body {
   height: 100%;
   transition: 0.25s;
 }
+.time-song { 
+  display: flex;
+}
+.time-song * { 
+  padding: 4px;
+}
+
 
 .weather {
   display: flex;
@@ -213,7 +220,9 @@ body {
   font-size: 100px;
   letter-spacing: -4px;  
 }
-
+.week { 
+  margin-bottom: 10px;
+}
 .date {
   min-height: 28px;
   font-size: 24px;
@@ -263,11 +272,21 @@ body {
   min-height: 160px;  
   padding: 20px;
 }
+.change-language-wrapper { 
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.change-language-ru, .change-language-en { 
+width: auto;
+height: auto;
+}
 
 .change-quote {
   margin-bottom: 30px;
   background-image: url("/assets/svg/reload.svg");  
 }
+
 
 .quote {
   min-height: 32px;

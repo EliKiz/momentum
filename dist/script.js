@@ -2090,6 +2090,74 @@ module.exports = function (O, defaultConstructor) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/string-pad.js":
+/*!******************************************************!*\
+  !*** ./node_modules/core-js/internals/string-pad.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
+var repeat = __webpack_require__(/*! ../internals/string-repeat */ "./node_modules/core-js/internals/string-repeat.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+
+var ceil = Math.ceil;
+
+// `String.prototype.{ padStart, padEnd }` methods implementation
+var createMethod = function (IS_END) {
+  return function ($this, maxLength, fillString) {
+    var S = String(requireObjectCoercible($this));
+    var stringLength = S.length;
+    var fillStr = fillString === undefined ? ' ' : String(fillString);
+    var intMaxLength = toLength(maxLength);
+    var fillLen, stringFiller;
+    if (intMaxLength <= stringLength || fillStr == '') return S;
+    fillLen = intMaxLength - stringLength;
+    stringFiller = repeat.call(fillStr, ceil(fillLen / fillStr.length));
+    if (stringFiller.length > fillLen) stringFiller = stringFiller.slice(0, fillLen);
+    return IS_END ? S + stringFiller : stringFiller + S;
+  };
+};
+
+module.exports = {
+  // `String.prototype.padStart` method
+  // https://tc39.github.io/ecma262/#sec-string.prototype.padstart
+  start: createMethod(false),
+  // `String.prototype.padEnd` method
+  // https://tc39.github.io/ecma262/#sec-string.prototype.padend
+  end: createMethod(true)
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/string-repeat.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/string-repeat.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var toInteger = __webpack_require__(/*! ../internals/to-integer */ "./node_modules/core-js/internals/to-integer.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+
+// `String.prototype.repeat` method implementation
+// https://tc39.github.io/ecma262/#sec-string.prototype.repeat
+module.exports = ''.repeat || function repeat(count) {
+  var str = String(requireObjectCoercible(this));
+  var result = '';
+  var n = toInteger(count);
+  if (n < 0 || n == Infinity) throw RangeError('Wrong number of repetitions');
+  for (;n > 0; (n >>>= 1) && (str += str)) if (n & 1) result += str;
+  return result;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/task.js":
 /*!************************************************!*\
   !*** ./node_modules/core-js/internals/task.js ***!
@@ -2420,6 +2488,22 @@ if (v8) {
 }
 
 module.exports = version && +version;
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/webkit-string-pad-bug.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/core-js/internals/webkit-string-pad-bug.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/zloirock/core-js/issues/280
+var userAgent = __webpack_require__(/*! ../internals/user-agent */ "./node_modules/core-js/internals/user-agent.js");
+
+// eslint-disable-next-line unicorn/no-unsafe-regex
+module.exports = /Version\/10\.\d+(\.\d+)?( Mobile\/\w+)? Safari\//.test(userAgent);
 
 
 /***/ }),
@@ -2964,6 +3048,30 @@ $({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
     });
     if (result.error) reject(result.value);
     return capability.promise;
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.string.pad-start.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/modules/es.string.pad-start.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $padStart = __webpack_require__(/*! ../internals/string-pad */ "./node_modules/core-js/internals/string-pad.js").start;
+var WEBKIT_BUG = __webpack_require__(/*! ../internals/webkit-string-pad-bug */ "./node_modules/core-js/internals/webkit-string-pad-bug.js");
+
+// `String.prototype.padStart` method
+// https://tc39.github.io/ecma262/#sec-string.prototype.padstart
+$({ target: 'String', proto: true, forced: WEBKIT_BUG }, {
+  padStart: function padStart(maxLength /* , fillString = ' ' */) {
+    return $padStart(this, maxLength, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
 
@@ -4163,6 +4271,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_weather__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/weather */ "./src/js/modules/weather.js");
 /* harmony import */ var _modules_quote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/quote */ "./src/js/modules/quote.js");
 /* harmony import */ var _modules_audio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/audio */ "./src/js/modules/audio.js");
+/* harmony import */ var _modules_translate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/translate */ "./src/js/modules/translate.js");
+
 
 
 
@@ -4177,8 +4287,9 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_slider__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_weather__WEBPACK_IMPORTED_MODULE_3__["default"])();
-  Object(_modules_quote__WEBPACK_IMPORTED_MODULE_4__["default"])();
-  Object(_modules_audio__WEBPACK_IMPORTED_MODULE_5__["default"])(); // playList();
+  Object(_modules_quote__WEBPACK_IMPORTED_MODULE_4__["default"])('dataRU.json');
+  Object(_modules_audio__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  Object(_modules_translate__WEBPACK_IMPORTED_MODULE_6__["default"])(); // playList();
   // console.log(playList());
 });
 
@@ -4193,50 +4304,84 @@ window.addEventListener('DOMContentLoaded', function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _playList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./playList */ "./src/js/modules/playList.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_pad_start__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.pad-start */ "./node_modules/core-js/modules/es.string.pad-start.js");
+/* harmony import */ var core_js_modules_es_string_pad_start__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_pad_start__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _playList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./playList */ "./src/js/modules/playList.js");
+
+
 
 
 
 var audio = function audio() {
-  var audio = document.querySelector('.audio'),
-      player = document.querySelector('.player'),
-      playBtn = document.querySelector('.play '),
+  // const audio = document.querySelector('.audio'),
+  var player = document.querySelector('.player'),
+      playBtn = document.querySelector('.play'),
       prevBtn = document.querySelector('.play-prev'),
       nextBtn = document.querySelector('.play-next'),
       songsList = document.querySelector('.play-list');
-  var randomNum;
-  var playNum = localStorage.getItem('selected song');
-  var isPlay = false;
-  var currentSong = _playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum]; //   if(localStorage.getItem('selected song')) { 
-  //     playNum = 'selected song';
-  //   }
-  // console.log() ;
-  // console.log(playList);
+  var randomNum; // let playNum = localStorage.getItem('selected song');
+
+  var playNum = 1; //переменная флаг
+
+  var isPlay = false; //Создание нового аудио объекта со статичным состоянием 
+
+  var audio = new Audio(_playList__WEBPACK_IMPORTED_MODULE_3__["default"][playNum].src);
 
   function playAudio() {
     // audio.src = 'https://7oom.ru/audio/naturesounds/07%20Birds%20(7oom.ru).mp3';
-    audio.src = _playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum].src; // audio.currentTime = 0;
+    // audio.currentTime = 0;
     // audio.muted();
-
-    audio.volume = .11;
-
-    if (!isPlay) {
-      isPlay = true;
+    // if(!isPlay) { 
+    //     isPlay = true;
+    //     audio.play();
+    //     // playBtn.classList.toggle('pause');
+    // } else { 
+    //     isPlay = false;
+    //     audio.pause();
+    //     // playBtn.classList.toggle('pause');
+    // }
+    // Условие на наличие паузы
+    if (audio.paused) {
+      playBtn.classList.remove("play");
+      playBtn.classList.add("pause");
       audio.play();
-      playBtn.classList.toggle('pause');
+      console.log(audio.paused);
+      console.log('done');
     } else {
-      isPlay = false;
+      playBtn.classList.remove("pause");
+      playBtn.classList.add("play");
       audio.pause();
-      playBtn.classList.toggle('pause');
-    }
-  }
+      console.log('dwddone');
+    } // localStorage.setItem('selected song', playNum);
+
+  } // инициализация общего кол-ва времени трека 
+
+
+  audio.addEventListener("loadeddata", function () {
+    player.querySelector(".time-song .length").textContent = getTimeCodeFromNum(audio.duration);
+    audio.volume = .75;
+  }, false); //   player.addEventListener('click', () =>{
+  //     if (audio.paused) {
+  //         playBtn.classList.remove("play");
+  //         playBtn.classList.add("pause");
+  //         audio.play();
+  //       } else {
+  //         playBtn.classList.remove("pause");
+  //         playBtn.classList.add("play");
+  //         audio.pause();
+  //       }
+  //    });
+  // функции кнопок слайдера 
 
   function playNext() {
+    audio.src = _playList__WEBPACK_IMPORTED_MODULE_3__["default"][playNum].src;
     playNum += 1;
 
-    if (playNum >= _playList__WEBPACK_IMPORTED_MODULE_1__["default"].length) {
+    if (playNum >= _playList__WEBPACK_IMPORTED_MODULE_3__["default"].length) {
       playNum = 0;
     }
 
@@ -4245,34 +4390,36 @@ var audio = function audio() {
     localStorage.setItem('selected song', playNum);
   }
 
-  console.log("playList is ".concat(_playList__WEBPACK_IMPORTED_MODULE_1__["default"].length));
+  console.log("playList is ".concat(_playList__WEBPACK_IMPORTED_MODULE_3__["default"].length));
 
   function playPrev() {
+    audio.src = _playList__WEBPACK_IMPORTED_MODULE_3__["default"][playNum].src;
     playNum -= 1;
 
     if (playNum < 0) {
-      playNum = 0;
+      playNum = _playList__WEBPACK_IMPORTED_MODULE_3__["default"].length - 1;
     }
 
     console.log(playNum);
     playAudio();
     localStorage.setItem('selected song', playNum);
-  }
+  } // === / функции кнопок слайдера  ====
+
 
   function toggleBtn() {
     playBtn.classList.toggle('pause');
-  }
+  } // Динамическое создание плейлиста 
+
 
   function createPlaylist() {
-    _playList__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(function (item) {
+    _playList__WEBPACK_IMPORTED_MODULE_3__["default"].forEach(function (item) {
       // console.log(item);
       var li = document.createElement('li');
       li.classList.add('play-item');
       li.textContent = item.title;
       songsList.append(li);
 
-      if (_playList__WEBPACK_IMPORTED_MODULE_1__["default"][playNum].title == item.title) {
-        console.log('das');
+      if (_playList__WEBPACK_IMPORTED_MODULE_3__["default"][playNum].title == item.title) {
         li.style.opacity = '1';
       }
     });
@@ -4290,8 +4437,19 @@ var audio = function audio() {
   setInterval(function () {
     var progressBar = player.querySelector(".progress");
     progressBar.style.width = audio.currentTime / audio.duration * 100 + "%";
-    player.querySelector(".time .current").textContent = getTimeCodeFromNum(audio.currentTime);
-  }, 500);
+    player.querySelector(".time-song .current").textContent = getTimeCodeFromNum(audio.currentTime);
+  }, 500); //turn 128 seconds into 2:08
+
+  function getTimeCodeFromNum(num) {
+    var seconds = parseInt(num);
+    var minutes = parseInt(seconds / 60);
+    seconds -= minutes * 60;
+    var hours = parseInt(minutes / 60);
+    minutes -= hours * 60;
+    if (hours === 0) return "".concat(minutes, ":").concat(String(seconds % 60).padStart(2, 0));
+    return "".concat(String(hours).padStart(2, 0), ":").concat(minutes, ":").concat(String(seconds % 60).padStart(2, 0));
+  }
+
   playBtn.addEventListener('click', playAudio);
   prevBtn.addEventListener('click', playPrev);
   nextBtn.addEventListener('click', playNext); //    playBtn.addEventListener('click', toggleBtn);
@@ -4318,13 +4476,13 @@ function getTimeOfDay() {
   // console.log(nowMinutes);
 
   if (nowHourse >= 6 && nowHourse < 12) {
-    return 'morning';
+    return 'Доброе утро,';
   } else if (nowHourse >= 12 && nowHourse < 18) {
-    return 'afternoon';
+    return 'Добрый день,';
   } else if (nowHourse >= 18 && nowHourse < 24) {
-    return 'evening';
+    return 'Добрый вечер,';
   } else if (nowHourse >= 0 && nowHourse < 6) {
-    return 'night';
+    return 'Доброй ночь,';
   }
 }
 
@@ -4332,7 +4490,7 @@ var sayHi = function sayHi() {
   var greeting = document.querySelector('.greeting'),
       user = document.querySelector('.name');
   var timeOfDay = getTimeOfDay();
-  var greetingText = "Good ".concat(timeOfDay, ",");
+  var greetingText = timeOfDay;
   greeting.innerHTML = greetingText; // console.log(user.value);
 
   function setNameUser() {
@@ -4407,53 +4565,49 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var quote = function quote() {
-  var quote = document.querySelector('.quote'),
-      author = document.querySelector('.author'),
-      changeQuote = document.querySelector('.change-quote');
+// const quote = () => { 
+function getQuotes(quotests) {
+  var quote, author, changeQuote, quotes, res, data, showQuotes;
+  return regeneratorRuntime.async(function getQuotes$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          showQuotes = function _ref() {
+            var arr = Object.entries(data).length - 1;
+            var random = Math.round(Math.random() * arr);
+            console.log(random);
+            quote.textContent = data[random].text;
+            author.textContent = data[random].author;
+          };
 
-  function getQuotes() {
-    var quotes, res, data, showQuotes;
-    return regeneratorRuntime.async(function getQuotes$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            showQuotes = function _ref() {
-              var arr = Object.entries(data).length - 1;
-              var random = Math.round(Math.random() * arr);
-              console.log(random);
-              quote.textContent = data[random].text;
-              author.textContent = data[random].author;
-            };
+          quote = document.querySelector('.quote'), author = document.querySelector('.author'), changeQuote = document.querySelector('.change-quote');
+          quotes = quotests;
+          _context.next = 5;
+          return regeneratorRuntime.awrap(fetch(quotes));
 
-            quotes = 'data.json';
-            _context.next = 4;
-            return regeneratorRuntime.awrap(fetch(quotes));
+        case 5:
+          res = _context.sent;
+          _context.next = 8;
+          return regeneratorRuntime.awrap(res.json());
 
-          case 4:
-            res = _context.sent;
-            _context.next = 7;
-            return regeneratorRuntime.awrap(res.json());
-
-          case 7:
-            data = _context.sent;
+        case 8:
+          data = _context.sent;
+          showQuotes();
+          changeQuote.addEventListener('click', function () {
             showQuotes();
-            changeQuote.addEventListener('click', function () {
-              showQuotes();
-            });
+          });
 
-          case 10:
-          case "end":
-            return _context.stop();
-        }
+        case 11:
+        case "end":
+          return _context.stop();
       }
-    });
-  }
+    }
+  });
+}
 
-  getQuotes();
-};
+getQuotes('dataRU.json'); // };
 
-/* harmony default export */ __webpack_exports__["default"] = (quote);
+/* harmony default export */ __webpack_exports__["default"] = (getQuotes);
 
 /***/ }),
 
@@ -4529,11 +4683,16 @@ var slider = function slider() {
 /*!*********************************!*\
   !*** ./src/js/modules/timer.js ***!
   \*********************************/
-/*! exports provided: default */
+/*! exports provided: showFoolDate, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showFoolDate", function() { return showFoolDate; });
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+
+
 var timer = function timer() {
   var time = document.querySelector('.time'),
       date = document.querySelector('.date');
@@ -4551,13 +4710,105 @@ var timer = function timer() {
   function showDate() {
     var nowDate = new Date();
     var currentDate = nowDate.toLocaleDateString();
-    date.innerHTML = currentDate; // console.log(nowDate);
+    date.innerHTML = currentDate;
+    console.log(currentDate);
   }
 
-  showDate();
+  showDate(); // function getWeekDay(date) { 
+  //     let days = ['вс','пн','вт','ср','чт','пт'];
+  //     return days[date.getDay()];
+  // }
+  // let dates = new Date(2014, 0, 2);
 };
 
+function showFoolDate(date, days, month) {
+  var week = document.querySelector('.week');
+  days = ['Воскресенье,', 'Понедельник,', 'Вторник,', 'Среда,', 'Четверг,', 'Пятница,', 'Суббота'];
+  month = ['Январь', 'Февраль', 'Март ', 'Апрель ', 'Май ', 'Июнь ', 'Июль ', 'Август ', 'Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь'];
+  week.textContent = "\n        ".concat(days[date.getDay()], "\n        ").concat(month[date.getMonth()], "\n        ").concat(date.getDate(), "\n        ");
+  return;
+}
+
+console.log(showFoolDate(new Date()));
+
 /* harmony default export */ __webpack_exports__["default"] = (timer);
+
+/***/ }),
+
+/***/ "./src/js/modules/translate.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/translate.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./hi */ "./src/js/modules/hi.js");
+/* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./weather */ "./src/js/modules/weather.js");
+/* harmony import */ var _quote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./quote */ "./src/js/modules/quote.js");
+/* harmony import */ var _timer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./timer */ "./src/js/modules/timer.js");
+
+
+
+
+
+
+
+var translate = function translate() {
+  var cahngeBtn = document.querySelectorAll('.change-language-wrapper');
+  var greetingTranslation = {
+    // 'ru': ['Доброе утро,', 'добрый день,', 'добрый вечер,', 'доброй ночи,'], 
+    // 'ru': 'Хорошего дня',
+    'en': ['Good morning,', 'Good afternoon,', 'Good evening,', 'Good night,'],
+    'week': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+    'months': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septamber', 'October', 'November', 'December']
+  };
+  var hi = document.querySelector('.greeting');
+
+  function showTranslateEN() {
+    var arr = greetingTranslation.en;
+    console.log(arr[2]);
+
+    if (Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])() === 'Доброе утро,') {
+      return hi.textContent = arr[0];
+    } else if (Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])() === 'Добрый день,') {
+      return hi.textContent = arr[1];
+    } else if (Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])() === 'Добрый вечер,') {
+      return hi.textContent = arr[2];
+    } else if (Object(_hi__WEBPACK_IMPORTED_MODULE_1__["getTimeOfDay"])() === 'Доброй ночь,') {
+      return hi.textContent = arr[3];
+    }
+  }
+
+  cahngeBtn.forEach(function (item) {
+    item.addEventListener('click', function (event) {
+      var target = event.target;
+
+      if (target.classList.contains('change-language-ru')) {
+        Object(_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
+        Object(_weather__WEBPACK_IMPORTED_MODULE_2__["getWeather"])('ru', 'Moscow');
+        Object(_quote__WEBPACK_IMPORTED_MODULE_3__["default"])('dataRU.json');
+      } else {
+        showTranslateEN();
+        Object(_weather__WEBPACK_IMPORTED_MODULE_2__["getWeather"])('en', 'Moscow');
+        Object(_quote__WEBPACK_IMPORTED_MODULE_3__["default"])('dataEN.json');
+        console.log(" is days - ".concat(greetingTranslation.week));
+        var date = new Date();
+        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showFoolDate"])('date', 'greetingTranslation.week', 'greetingTranslation.months ');
+      }
+    });
+  }); // cahngeBtn.addEventListener('click', (event) => { 
+  //     const target = e.target;
+  //     if(target && target.classList.contains('change-language-ru') ) { 
+  //     }
+  // });
+  // cahngeBtn.addEventListener('click', showTranslateRu);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (translate);
 
 /***/ }),
 
@@ -4565,83 +4816,87 @@ var timer = function timer() {
 /*!***********************************!*\
   !*** ./src/js/modules/weather.js ***!
   \***********************************/
-/*! exports provided: default */
+/*! exports provided: getWeather, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWeather", function() { return getWeather; });
 /* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.symbol */ "./node_modules/core-js/modules/es.symbol.js");
 /* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.symbol.description */ "./node_modules/core-js/modules/es.symbol.description.js");
 /* harmony import */ var core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
-/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
-/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
-/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
 
 
+
+var weatherIcon = document.querySelector('.weather-icon'),
+    temperature = document.querySelector('.temperature'),
+    weatherDescr = document.querySelector('.weather-description'),
+    city = document.querySelector('.city');
+
+function getWeather(language) {
+  var city,
+      url,
+      res,
+      data,
+      _args = arguments;
+  return regeneratorRuntime.async(function getWeather$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          city = _args.length > 1 && _args[1] !== undefined ? _args[1] : 'Москва';
+          url = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, "&lang=").concat(language, "&appid=cda9512bfea66fa281c436745191bac0&units=metric");
+          _context.next = 4;
+          return regeneratorRuntime.awrap(fetch(url));
+
+        case 4:
+          res = _context.sent;
+          _context.next = 7;
+          return regeneratorRuntime.awrap(res.json());
+
+        case 7:
+          data = _context.sent;
+          console.log(data.weather[0].id, // icon 
+          data.weather[0].description, // descr
+          Math.round(data.main.temp) // temp
+          );
+          weatherIcon.className = 'weather-icon owf';
+          weatherIcon.classList.add("owf-".concat(data.weather[0].id));
+          temperature.textContent = "".concat(Math.round(data.main.temp), " \xB0C");
+          weatherDescr.textContent = "".concat(data.weather[0].description);
+
+        case 13:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+}
 
 var weather = function weather() {
-  var weatherIcon = document.querySelector('.weather-icon'),
-      temperature = document.querySelector('.temperature'),
-      weatherDescr = document.querySelector('.weather-description'),
-      city = document.querySelector('.city');
-
-  function getWeather() {
-    var city,
-        url,
-        res,
-        data,
-        _args = arguments;
-    return regeneratorRuntime.async(function getWeather$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            city = _args.length > 0 && _args[0] !== undefined ? _args[0] : 'Москва';
-            url = "https://api.openweathermap.org/data/2.5/weather?q=".concat(city, "&lang=ru&appid=cda9512bfea66fa281c436745191bac0&units=metric");
-            _context.next = 4;
-            return regeneratorRuntime.awrap(fetch(url));
-
-          case 4:
-            res = _context.sent;
-            _context.next = 7;
-            return regeneratorRuntime.awrap(res.json());
-
-          case 7:
-            data = _context.sent;
-            console.log(data.weather[0].id, // icon 
-            data.weather[0].description, // descr
-            Math.round(data.main.temp) // temp
-            );
-            weatherIcon.className = 'weather-icon owf';
-            weatherIcon.classList.add("owf-".concat(data.weather[0].id));
-            temperature.textContent = "".concat(Math.round(data.main.temp), " \xB0C");
-            weatherDescr.textContent = "".concat(data.weather[0].description);
-
-          case 13:
-          case "end":
-            return _context.stop();
-        }
-      }
-    });
-  }
-
-  getWeather();
+  getWeather('ru');
 
   function getWeatherCity() {
     city.addEventListener('change', function () {
       console.log(city.value);
-      getWeather(city.value);
+      getWeather('ru', city.value);
     });
   }
 
   getWeatherCity();
 };
+
 
 /* harmony default export */ __webpack_exports__["default"] = (weather); // cda9512bfea66fa281c436745191bac0
 // https://api.openweathermap.org/data/2.5/weather?q=Москва&lang=ru&appid=cda9512bfea66fa281c436745191bac0=metric
