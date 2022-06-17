@@ -1,4 +1,4 @@
-import timer from './modules/timer';
+import {showFullDate, showTime, showDate} from './modules/timer';
 import hi from './modules/hi';
 import slider from './modules/slider';
 import weather from './modules/weather';
@@ -9,8 +9,10 @@ import translate from './modules/translate';
 
 window.addEventListener('DOMContentLoaded', () => { 
     'use strict';
-    
-    timer();
+    showFullDate(new Date());
+    showTime();
+    showDate();
+    // timer();
     hi();
     slider();
     weather();

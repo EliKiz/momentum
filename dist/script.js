@@ -4283,7 +4283,10 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showFullDate"])(new Date());
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showTime"])();
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showDate"])(); // timer();
+
   Object(_modules_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_slider__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_weather__WEBPACK_IMPORTED_MODULE_3__["default"])();
@@ -4683,55 +4686,65 @@ var slider = function slider() {
 /*!*********************************!*\
   !*** ./src/js/modules/timer.js ***!
   \*********************************/
-/*! exports provided: showFoolDate, default */
+/*! exports provided: showFullDate, showTime, showDate */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showFoolDate", function() { return showFoolDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showFullDate", function() { return showFullDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showTime", function() { return showTime; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showDate", function() { return showDate; });
 /* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
 /* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
 
+// const timer = () => { 
+var time = document.querySelector('.time'),
+    date = document.querySelector('.date');
 
-var timer = function timer() {
-  var time = document.querySelector('.time'),
-      date = document.querySelector('.date');
+function showTime() {
+  var date = new Date();
+  var currentTime = date.toLocaleTimeString();
+  time.innerHTML = currentTime; // setTimeout(showTime, 1000);
 
-  function showTime() {
-    var date = new Date();
-    var currentTime = date.toLocaleTimeString();
-    time.innerHTML = currentTime; // setTimeout(showTime, 1000);
-
-    showDate();
-  }
-
-  showTime();
-
-  function showDate() {
-    var nowDate = new Date();
-    var currentDate = nowDate.toLocaleDateString();
-    date.innerHTML = currentDate;
-    console.log(currentDate);
-  }
-
-  showDate(); // function getWeekDay(date) { 
-  //     let days = ['вс','пн','вт','ср','чт','пт'];
-  //     return days[date.getDay()];
-  // }
-  // let dates = new Date(2014, 0, 2);
-};
-
-function showFoolDate(date, days, month) {
-  var week = document.querySelector('.week');
-  days = ['Воскресенье,', 'Понедельник,', 'Вторник,', 'Среда,', 'Четверг,', 'Пятница,', 'Суббота'];
-  month = ['Январь', 'Февраль', 'Март ', 'Апрель ', 'Май ', 'Июнь ', 'Июль ', 'Август ', 'Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь'];
-  week.textContent = "\n        ".concat(days[date.getDay()], "\n        ").concat(month[date.getMonth()], "\n        ").concat(date.getDate(), "\n        ");
-  return;
+  showDate();
 }
 
-console.log(showFoolDate(new Date()));
+showTime();
 
-/* harmony default export */ __webpack_exports__["default"] = (timer);
+function showDate() {
+  var nowDate = new Date();
+  var currentDate = nowDate.toLocaleDateString();
+  date.innerHTML = currentDate;
+  console.log(currentDate);
+}
+
+showDate(); // function getWeekDay(date) { 
+//     let days = ['вс','пн','вт','ср','чт','пт'];
+//     return days[date.getDay()];
+// }
+// let dates = new Date(2014, 0, 2);
+// };
+
+function showFullDate(date, days, month) {
+  var language = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'ru';
+  var week = document.querySelector('.week');
+
+  switch (language) {
+    case 'ru':
+      days = ['Воскресенье,', 'Понедельник,', 'Вторник,', 'Среда,', 'Четверг,', 'Пятница,', 'Суббота'];
+      month = ['Январь', 'Февраль', 'Март ', 'Апрель ', 'Май ', 'Июнь ', 'Июль ', 'Август ', 'Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь'];
+      break;
+
+    case 'en':
+      days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septamber', 'October', 'November', 'December'];
+      break;
+  }
+
+  return week.textContent = "\n        ".concat(days[date.getDay()], "\n        ").concat(month[date.getMonth()], "\n        ").concat(date.getDate(), "\n        ");
+}
+
+ // export default timer;
 
 /***/ }),
 
@@ -4759,12 +4772,15 @@ __webpack_require__.r(__webpack_exports__);
 
 var translate = function translate() {
   var cahngeBtn = document.querySelectorAll('.change-language-wrapper');
+  var date = new Date();
   var greetingTranslation = {
     // 'ru': ['Доброе утро,', 'добрый день,', 'добрый вечер,', 'доброй ночи,'], 
     // 'ru': 'Хорошего дня',
     'en': ['Good morning,', 'Good afternoon,', 'Good evening,', 'Good night,'],
     'week': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-    'months': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septamber', 'October', 'November', 'December']
+    'weekRU': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+    'months': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septamber', 'October', 'November', 'December'],
+    'monthsRU': ['Январь', 'Февраль', 'Март ', 'Апрель ', 'Май ', 'Июнь ', 'Июль ', 'Август ', 'Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь']
   };
   var hi = document.querySelector('.greeting');
 
@@ -4783,21 +4799,35 @@ var translate = function translate() {
     }
   }
 
+  function showtranslateData() {
+    var time = document.querySelector('.time'),
+        dateFull = document.querySelector('.date');
+    var currentTime = date.toLocaleTimeString('en-US');
+    time.textContent = currentTime;
+    var currentDate = date.toLocaleDateString('en-US');
+    dateFull.textContent = currentDate;
+  }
+
   cahngeBtn.forEach(function (item) {
     item.addEventListener('click', function (event) {
       var target = event.target;
 
       if (target.classList.contains('change-language-ru')) {
+        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showTime"])();
+        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showDate"])();
         Object(_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
+        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showFullDate"])(date, greetingTranslation.weekRU, greetingTranslation.monthsRU, 'ru');
         Object(_weather__WEBPACK_IMPORTED_MODULE_2__["getWeather"])('ru', 'Moscow');
         Object(_quote__WEBPACK_IMPORTED_MODULE_3__["default"])('dataRU.json');
       } else {
         showTranslateEN();
         Object(_weather__WEBPACK_IMPORTED_MODULE_2__["getWeather"])('en', 'Moscow');
         Object(_quote__WEBPACK_IMPORTED_MODULE_3__["default"])('dataEN.json');
-        console.log(" is days - ".concat(greetingTranslation.week));
-        var date = new Date();
-        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showFoolDate"])('date', 'greetingTranslation.week', 'greetingTranslation.months ');
+        console.log(" is days - ".concat(greetingTranslation.months));
+        showtranslateData();
+        console.log(date.toLocaleString('en-US'));
+        console.log(date.toLocaleString());
+        Object(_timer__WEBPACK_IMPORTED_MODULE_4__["showFullDate"])(date, greetingTranslation.week, greetingTranslation.months, 'en');
       }
     });
   }); // cahngeBtn.addEventListener('click', (event) => { 

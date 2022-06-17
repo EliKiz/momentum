@@ -277,9 +277,14 @@ body {
   flex-direction: row;
   margin-bottom: 10px;
 }
-.change-language-ru, .change-language-en { 
+
+.change-language-ru, .change-language-en{ 
 width: auto;
 height: auto;
+margin-right: 10px;
+}
+.change-language-en:last-child  { 
+  margin-right: 0px;
 }
 
 .change-quote {

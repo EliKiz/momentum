@@ -1,5 +1,5 @@
 
-const timer = () => { 
+// const timer = () => { 
     const time = document.querySelector('.time'),
         date = document.querySelector('.date');
         
@@ -28,22 +28,37 @@ const timer = () => {
     // }
     // let dates = new Date(2014, 0, 2);
     
-};
-    function showFoolDate(date, days, month ) {
+// };
+
+    function showFullDate(date, days,
+        month,
+        language = 'ru') {
         const week = document.querySelector('.week');
-         days = [
-            'Воскресенье,','Понедельник,','Вторник,','Среда,','Четверг,','Пятница,','Суббота'
-        ];
-         month = [
-            'Январь', 'Февраль','Март ','Апрель ','Май ','Июнь ','Июль ','Август ','Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь'
-        ];
-        week.textContent = `
+            switch (language) { 
+                case 'ru':
+                    days = [
+                        'Воскресенье,','Понедельник,','Вторник,','Среда,','Четверг,','Пятница,','Суббота'
+                    ];
+                    month = [
+                        'Январь', 'Февраль','Март ','Апрель ','Май ','Июнь ','Июль ','Август ','Сентябрь', 'Октябрь ', 'Ноябрь ', 'Декабрь'
+                    ];
+                break;
+                case 'en':
+                    days = [
+                        'monday','tuesday','wednesday','thursday','friday','saturday','sunday'
+                    ];
+                    month = [
+                        'January','February','March','April','May','June','July','August','Septamber','October','November','December'
+                    ];
+                break;
+            }
+        return week.textContent = `
         ${days[date.getDay()]}
         ${month[date.getMonth()]}
         ${date.getDate()}
         `;
-        return ;
+    
     }
-    console.log(showFoolDate(new Date()));
-export {showFoolDate};
-export default timer;
+    
+export {showFullDate, showTime, showDate};
+// export default timer;
