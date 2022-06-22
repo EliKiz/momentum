@@ -24,6 +24,7 @@ const translate = () => {
     const hi =  document.querySelector('.greeting');
 
     function showTranslateEN() { 
+        hi.classList.toggle('animation');
         const arr = greetingTranslation.en;
         console.log(arr[2]);
         if (getTimeOfDay() === 'Доброе утро,') { 
@@ -32,7 +33,7 @@ const translate = () => {
             return hi.textContent = arr[1]; 
         } else if (getTimeOfDay() === 'Добрый вечер,' ) { 
             return hi.textContent = arr[2];
-        }else if(getTimeOfDay() === 'Доброй ночь,') { 
+        }else if(getTimeOfDay() === 'Доброй ночи,') { 
             return hi.textContent = arr[3];
         }
     }
@@ -51,22 +52,25 @@ const translate = () => {
     cahngeBtn.forEach(item => { 
         item.addEventListener('click', (event) => { 
             const target = event.target;
+            const mainAnimation = document.querySelector('body');
+
+            
             if( target.classList.contains('change-language-ru') ) { 
+                
                 showTime();
                 showDate();
                 sayHi();
-                showFullDate(date, greetingTranslation.weekRU, greetingTranslation.monthsRU, 'ru');
+                showFullDate(date, '', '', 'ru');
                 getWeather('ru','Moscow',);
                 getQuotes('dataRU.json');
             } else { 
+                
+            
                 showTranslateEN();
                 getWeather('en','Moscow',);
                 getQuotes('dataEN.json');
-                console.log(` is days - ${greetingTranslation.months}`);
                 showtranslateData();
-                console.log(date.toLocaleString('en-US'));
-                console.log(date.toLocaleString());
-                showFullDate(date, greetingTranslation.week, greetingTranslation.months, 'en');
+                showFullDate(date, '', '', 'en');
             }
         });
     });

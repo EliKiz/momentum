@@ -30,9 +30,7 @@
     
 // };
 
-    function showFullDate(date, days,
-        month,
-        language = 'ru') {
+    function showFullDate(date, days, month, language = 'ru') {
         const week = document.querySelector('.week');
             switch (language) { 
                 case 'ru':

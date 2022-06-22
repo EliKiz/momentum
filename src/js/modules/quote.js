@@ -2,18 +2,17 @@
 
     
     
-    async function getQuotes(quotests) { 
+    async function getQuotes(quotests, fade) { 
         
         const quote = document.querySelector('.quote'),
         author = document.querySelector('.author'),
         changeQuote = document.querySelector('.change-quote');
         
+
         const quotes = quotests;
         const res = await fetch(quotes);
         const data = await res.json();
         
-        // console.log(Object.entries(data));
-        // console.log( `lenght is ${Object.entries(data).length}` );
 
         
 
@@ -31,6 +30,7 @@
         }
         showQuotes();
 
+        
         changeQuote.addEventListener('click', () => { 
             
             showQuotes();
@@ -38,7 +38,12 @@
 
     }
     getQuotes('dataRU.json');
+    function fadeQuotes(fade) { 
+        const changeQuoteWrapper = document.querySelector('.quotes-wrapper');
+        changeQuoteWrapper.classList.toggle(fade);
+    }
 
 
 // };
+export {fadeQuotes};
 export default getQuotes;

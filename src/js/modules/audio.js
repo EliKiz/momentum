@@ -1,13 +1,17 @@
 import playList from './playList';
 
-const audio = () => { 
+const audio = (fade) => { 
     // const audio = document.querySelector('.audio'),
     const player = document.querySelector('.player'),
     playBtn = document.querySelector('.play'),
     prevBtn = document.querySelector('.play-prev'),
     nextBtn = document.querySelector('.play-next'),
     songsList = document.querySelector('.play-list');
+   
     
+    
+    
+
     let randomNum;
     // let playNum = localStorage.getItem('selected song');
     let playNum = 1;
@@ -16,40 +20,34 @@ const audio = () => {
 
     //Создание нового аудио объекта со статичным состоянием 
 
-    const audio = new Audio(playList[playNum].src);
-    
-    
+    let audio = new Audio(playList[playNum].src);
+    console.log(playList[1].src);
+    console.log(audio);
     function playAudio() {
         // audio.src = 'https://7oom.ru/audio/naturesounds/07%20Birds%20(7oom.ru).mp3';
         // audio.currentTime = 0;
         // audio.muted();
-        
-        // if(!isPlay) { 
-        //     isPlay = true;
-        //     audio.play();
-        //     // playBtn.classList.toggle('pause');
-        // } else { 
-        //     isPlay = false;
-        //     audio.pause();
-        //     // playBtn.classList.toggle('pause');
-        // }
+
+        // останвока текущего трека и запуск нового 
+        // audio.pause();
+        // console.log(`да  ${playList[num].src}`);
+        // audio.src = playList[num].src;
 
         // Условие на наличие паузы
         if (audio.paused) {
             playBtn.classList.remove("play");
             playBtn.classList.add("pause");
             audio.play();
-            console.log(audio.paused);
-            console.log('done');
         } else  {
             playBtn.classList.remove("pause");
             playBtn.classList.add("play");
             audio.pause();
-            console.log('dwddone');
         }   
         
         // localStorage.setItem('selected song', playNum);
     }
+
+
     // инициализация общего кол-ва времени трека 
     audio.addEventListener(
         "loadeddata",
@@ -74,14 +72,14 @@ const audio = () => {
     //       }
     //    });
 
-    // функции кнопок слайдера 
+    // функции кнопок перелистывания 
     function playNext() { 
         audio.src = playList[playNum].src;
         playNum += 1;
         if(playNum >= playList.length) { 
             playNum=0;
         }
-        playAudio();
+        playAudio(playNum);
         console.log(playNum);
         localStorage.setItem('selected song', playNum);
     } 
@@ -95,22 +93,27 @@ const audio = () => {
             playNum = playList.length-1;
         }
         console.log(playNum);
-        playAudio();
+        playAudio(playNum);
         localStorage.setItem('selected song', playNum);
     }
-    // === / функции кнопок слайдера  ====
+    // === / функции кнопок перелистывания  ====
     function toggleBtn() { 
         playBtn.classList.toggle('pause');
     }
     // Динамическое создание плейлиста 
     function createPlaylist() { 
         
-        playList.forEach(item => { 
+        playList.forEach((item, index) => { 
             // console.log(item);
             const li = document.createElement('li');
             li.classList.add('play-item');
             li.textContent = item.title;
+            
+            li.setAttribute('SONG', index );
+            
+            
             songsList.append(li);
+            
             if(playList[playNum].title == item.title ) { 
                 li.style.opacity = '1';
             }
@@ -118,6 +121,57 @@ const audio = () => {
         
     }
     createPlaylist();
+
+    const song = document.querySelectorAll('.play-item');
+
+    function hideSong() { 
+        song.forEach(item =>{ 
+            item.style.opacity = '0.5';
+        });
+        
+    } 
+
+     // запуск треков по клику 
+
+     function selectFromList() { 
+        
+        songsList.addEventListener('click', (event) =>  { 
+            const target = event.target;
+            if(target && target.classList.contains('play-item')) { 
+                song.forEach((item) => { 
+                    if(target == item ) { 
+                        hideSong();
+                        item.style.opacity = '1';
+                    }
+                });
+                if( target.getAttribute('song') === '0'  ) { 
+                    playNum = 0;
+                    console.log( playNum);
+                    audio.src = playList[0].src;
+                    playAudio();
+                } else if(target.getAttribute('song') === '1') { 
+                    playNum = 1;
+                    audio.src = playList[1].src;
+                    playAudio();
+                }else if(target.getAttribute('song') === '2') { 
+                    playNum = 2;
+                    audio.src = playList[2].src;
+                    playAudio();
+                }else if(target.getAttribute('song') === '3') { 
+                    playNum = 3;
+                    audio.src = playList[3].src;
+                    playAudio();
+                }
+                // playAudio();
+                
+                // console.log( target.getAttribute('song'));
+                // playList.forEach(item => { 
+                //     if(target.value )
+                // });
+            }
+        });
+    }
+    selectFromList();
 
     
     //click volume slider to change volume
@@ -164,4 +218,10 @@ const audio = () => {
 
 
 };
+
+function fadePlayer(fade) { 
+        const player = document.querySelector('.player');
+        player.classList.toggle(fade);
+}   
+export {fadePlayer};
 export default audio;

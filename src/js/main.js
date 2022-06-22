@@ -5,10 +5,19 @@ import weather from './modules/weather';
 import getQuotes from './modules/quote';
 import audio from './modules/audio';
 import translate from './modules/translate';
+import modals from './modules/modals';
+import settings from './modules/settings';
 // import playList from './modules/playList';
 
 window.addEventListener('DOMContentLoaded', () => { 
     'use strict';
+    const state = {
+        language: 'en',
+        photoSource: 'github',
+        blocks: ['time', 'date','greeting', 'quote', 'weather', 'audio', 'todolist']
+      };
+    
+
     showFullDate(new Date());
     showTime();
     showDate();
@@ -19,6 +28,8 @@ window.addEventListener('DOMContentLoaded', () => {
     getQuotes('dataRU.json');
     audio();
     translate();
+    modals();
+    settings(state);
     // playList();
     // console.log(playList());
 });

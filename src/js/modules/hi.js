@@ -14,7 +14,7 @@
         } else if ( nowHourse >= 18 && nowHourse < 24) { 
             return 'Добрый вечер,';
         } else if ( nowHourse >= 0 && nowHourse < 6)  {
-            return 'Доброй ночь,';
+            return 'Доброй ночи,';
         }
         
     }
@@ -23,7 +23,7 @@ const sayHi = () => {
    const greeting = document.querySelector('.greeting'),
         user = document.querySelector('.name');
 
-   
+        user.classList.add('animationIn');
     
     const timeOfDay = getTimeOfDay();
     const greetingText = timeOfDay;
