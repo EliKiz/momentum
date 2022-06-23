@@ -6,7 +6,7 @@
 
     async function getWeather(language, city = 'Москва', ) { 
         const animation = document.querySelector('.description-container');
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&appid=cda9512bfea66fa281c436745191bac0&units=metric`;
+        let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&appid=cda9512bfea66fa281c436745191bac0&units=metric`;
         const res = await fetch(url);
         const data = await res.json();
         
@@ -27,9 +27,8 @@
 
     }
     
-const weather = (fade) => { 
-    const  weatherBlock = document.querySelector('.weather');
-     weatherBlock.classList.toggle(fade);
+const weather = () => { 
+  
     //  switch (fade)  {
     //     case 'animationOut':
     //         weatherBlock.classList.add(fade);
@@ -49,7 +48,20 @@ const weather = (fade) => {
     getWeatherCity();
 
 };
-export {getWeather};
+function hidePiece(selector) { 
+    const  block = document.querySelector(selector);
+    block.classList.add('animationOut');
+    // weatherBlock.classList.add('animationOutDisplay');
+    setTimeout(() => block.classList.add('animationOutDisplay'), 500  );
+}
+function showPiece(selector) { 
+    const  block = document.querySelector(selector);
+    block.classList.remove('animationOut');
+    block.classList.add('animationIn');
+    block.classList.remove('animationOutDisplay');
+    // setTimeout(() => weatherBlock.classList.remove('animationOutDisplay'), 700  );
+}
+export {getWeather, hidePiece, showPiece};
 export default weather;
 
 

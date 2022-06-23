@@ -5151,13 +5151,16 @@ var modals = function modals() {
     close.addEventListener('click', function () {
       modal.classList.add("animationOut");
       setTimeout(function () {
-        return alert('da ya');
-      }, 1500); // setTimeout("alert('da ya')", 2000);
+        return modal.style.display = "none";
+      }, 900); // setTimeout("alert('da ya')", 2000);
       // modal.style.display = "none";
     });
     modal.addEventListener('click', function (e) {
       if (e.target === modal) {
-        modal.style.display = 'none';
+        modal.classList.add("animationOut");
+        setTimeout(function () {
+          return modal.style.display = "none";
+        }, 900);
       }
     });
   }
@@ -5287,38 +5290,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _weather__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./weather */ "./src/js/modules/weather.js");
-/* harmony import */ var _quote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./quote */ "./src/js/modules/quote.js");
-/* harmony import */ var _audio__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./audio */ "./src/js/modules/audio.js");
 
-
-
-
+// import weather from './weather';
+ // import {fadeQuotes} from './quote';
+// import {fadePlayer} from './audio';
 
 var settings = function settings(state) {
-  // console.log(state);
-  // if(state.blocks.length === 1 ) { 
-  //     console.log('да 0');
-  // }
-  var settingsWindow = document.querySelector('.settings-wrapper');
+  var isShow = true;
+  var weather = localStorage.getItem('weatherShow');
+  console.log(weather);
+
+  function check() {
+    document.getElementById("myCheck").checked = true;
+  }
+
+  function uncheck() {
+    document.getElementById("myCheck").checked = false;
+  }
+
+  if (weather === true) {
+    Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.weather');
+  } else {
+    Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.weather');
+  }
+
+  var settingsWindow = document.querySelector('.settings-wrapper'),
+      checkbox = document.querySelectorAll('input[type="checkbox"]');
+  console.log(checkbox);
+  checkbox.forEach(function (item) {
+    item.addEventListener('change', function () {
+      switch (item.getAttribute('data-input')) {
+        case 'weather':
+          if (item.checked) {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.weather');
+            localStorage.setItem('weatherShow', true);
+          } else {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.weather');
+            localStorage.setItem('weatherShow', false);
+          }
+
+          break;
+
+        case 'quotes':
+          if (item.checked) {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.quotes-wrapper');
+          } else {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.quotes-wrapper');
+          }
+
+          console.log('quotes');
+          break;
+
+        case 'audio':
+          if (item.checked) {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.player');
+          } else {
+            Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.player');
+          }
+
+          console.log('audio');
+          break;
+      } // if (checkbox.checked) {
+      //     showWeather();
+      //   console.log('Checked');
+      // } else {
+      //     hideWeather();
+      //   console.log('Not checked');
+      // }
+
+    });
+  });
   settingsWindow.addEventListener('click', function (event) {
     var target = event.target;
 
-    if (target.getAttribute('data-weather') === 'weather') {
-      state.blocks.forEach(function (item) {
-        if (item === 'weather') {
-          Object(_weather__WEBPACK_IMPORTED_MODULE_1__["default"])('animationOut');
-        }
-      });
+    if (target.getAttribute('data-weather')) {
+      console.log('da weather');
     } else if (target.getAttribute('data-player') === 'audio') {
       state.blocks.forEach(function (item) {
         if (item === 'audio') {
-          Object(_audio__WEBPACK_IMPORTED_MODULE_3__["fadePlayer"])('animationOut');
+          fadePlayer('animationOut');
         }
       });
     } else if (target.getAttribute('data-quotes') === 'quotes') {
       state.blocks.forEach(function (item) {
         if (item === 'quote') {
-          Object(_quote__WEBPACK_IMPORTED_MODULE_2__["fadeQuotes"])('animationOut');
+          fadeQuotes('animationOut');
         }
       });
     }
@@ -5683,12 +5739,14 @@ var translate = function translate() {
 /*!***********************************!*\
   !*** ./src/js/modules/weather.js ***!
   \***********************************/
-/*! exports provided: getWeather, default */
+/*! exports provided: getWeather, hidePiece, showPiece, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWeather", function() { return getWeather; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hidePiece", function() { return hidePiece; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showPiece", function() { return showPiece; });
 /* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.symbol */ "./node_modules/core-js/modules/es.symbol.js");
 /* harmony import */ var core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_symbol__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_symbol_description__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.symbol.description */ "./node_modules/core-js/modules/es.symbol.description.js");
@@ -5756,9 +5814,8 @@ function getWeather(language) {
   });
 }
 
-var weather = function weather(fade) {
-  var weatherBlock = document.querySelector('.weather');
-  weatherBlock.classList.toggle(fade); //  switch (fade)  {
+var weather = function weather() {
+  //  switch (fade)  {
   //     case 'animationOut':
   //         weatherBlock.classList.add(fade);
   //     break;
@@ -5766,7 +5823,6 @@ var weather = function weather(fade) {
   //         weatherBlock.classList.add(fade);
   //     break;
   //  }
-
   getWeather('ru');
 
   function getWeatherCity() {
@@ -5778,6 +5834,22 @@ var weather = function weather(fade) {
 
   getWeatherCity();
 };
+
+function hidePiece(selector) {
+  var block = document.querySelector(selector);
+  block.classList.add('animationOut'); // weatherBlock.classList.add('animationOutDisplay');
+
+  setTimeout(function () {
+    return block.classList.add('animationOutDisplay');
+  }, 500);
+}
+
+function showPiece(selector) {
+  var block = document.querySelector(selector);
+  block.classList.remove('animationOut');
+  block.classList.add('animationIn');
+  block.classList.remove('animationOutDisplay'); // setTimeout(() => weatherBlock.classList.remove('animationOutDisplay'), 700  );
+}
 
 
 /* harmony default export */ __webpack_exports__["default"] = (weather); // cda9512bfea66fa281c436745191bac0

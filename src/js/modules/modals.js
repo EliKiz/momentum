@@ -19,7 +19,7 @@ const modals = () =>  {
         close.addEventListener('click', () => { 
             
             modal.classList.add("animationOut");
-            setTimeout(() => alert('da ya'), 1500  );
+            setTimeout(() => modal.style.display = "none", 900  );
             // setTimeout("alert('da ya')", 2000);
             // modal.style.display = "none";
         });
@@ -27,7 +27,8 @@ const modals = () =>  {
         
         modal.addEventListener('click', (e) => { 
             if(e.target === modal) {
-                modal.style.display = 'none';
+                modal.classList.add("animationOut");
+                setTimeout(() => modal.style.display = "none", 900  );
             }
         });
 
