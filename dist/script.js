@@ -5296,35 +5296,61 @@ __webpack_require__.r(__webpack_exports__);
 // import {fadePlayer} from './audio';
 
 var settings = function settings(state) {
-  var isShow = true;
-  var weather = localStorage.getItem('weatherShow');
-  console.log(weather);
+  var weather = localStorage.getItem('weatherShow'),
+      quotes = localStorage.getItem('quotesShow'),
+      player = localStorage.getItem('playerShow');
 
-  function check() {
-    document.getElementById("myCheck").checked = true;
+  function toggleCheckbox(dataValue, selector, itemStorage) {
+    var myCheck = document.querySelectorAll('.myCheck');
+    myCheck.forEach(function (item, index) {
+      if (item.getAttribute('data-input') === dataValue && itemStorage === 'false') {
+        Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])(selector);
+        item.checked = false;
+      } else {
+        item.checked = true;
+        Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])(selector);
+      }
+    });
   }
 
-  function uncheck() {
-    document.getElementById("myCheck").checked = false;
-  }
-
-  if (weather === true) {
-    Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.weather');
-  } else {
-    Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.weather');
-  }
+  toggleCheckbox('weather', '.weather', weather);
+  toggleCheckbox('quotes', '.quotes-wrapper', quotes);
+  toggleCheckbox('audio', '.player', player); // function toggleChecked(elem, boolean) { 
+  //     document.getElementsByTagName(elem).checked = boolean;
+  // }
+  // function check() {
+  //   document.getElementById("myCheck").checked = true; 
+  // }
+  // function uncheck() {
+  //    document.getElementById("myCheck").checked = false;
+  // }
+  // if(weather === 'false') { 
+  //     hidePiece('.weather');
+  //     uncheck();
+  // } else { 
+  //     check();
+  //     showPiece('.weather');
+  // }
+  // if(quotes === 'false') { 
+  //     hidePiece('.quotes-wrapper');
+  //     uncheck();
+  // } else { 
+  //     check();
+  //     showPiece('.quotes-wrapper');
+  // }
 
   var settingsWindow = document.querySelector('.settings-wrapper'),
       checkbox = document.querySelectorAll('input[type="checkbox"]');
-  console.log(checkbox);
   checkbox.forEach(function (item) {
     item.addEventListener('change', function () {
       switch (item.getAttribute('data-input')) {
         case 'weather':
           if (item.checked) {
+            // check();
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.weather');
             localStorage.setItem('weatherShow', true);
           } else {
+            // uncheck();
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.weather');
             localStorage.setItem('weatherShow', false);
           }
@@ -5334,30 +5360,27 @@ var settings = function settings(state) {
         case 'quotes':
           if (item.checked) {
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.quotes-wrapper');
+            localStorage.setItem('quotesShow', true);
           } else {
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.quotes-wrapper');
-          }
+            localStorage.setItem('quotesShow', false);
+          } // console.log('quotes');
 
-          console.log('quotes');
+
           break;
 
         case 'audio':
           if (item.checked) {
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.player');
+            localStorage.setItem('playerShow', true);
           } else {
             Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.player');
-          }
+            localStorage.setItem('playerShow', false);
+          } // console.log('audio');
 
-          console.log('audio');
+
           break;
-      } // if (checkbox.checked) {
-      //     showWeather();
-      //   console.log('Checked');
-      // } else {
-      //     hideWeather();
-      //   console.log('Not checked');
-      // }
-
+      }
     });
   });
   settingsWindow.addEventListener('click', function (event) {
@@ -5377,9 +5400,8 @@ var settings = function settings(state) {
           fadeQuotes('animationOut');
         }
       });
-    }
+    } //    console.log(target); 
 
-    console.log(target);
   });
 };
 

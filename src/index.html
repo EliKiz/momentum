@@ -78,7 +78,7 @@
           <div class="item-wrapper"  >
             <div class="delete-weather"  >Отключить погоду</div>
             <label class="switch" id= 'weather'>
-              <input type="checkbox" data-input="weather" id="myCheck"  >
+              <input class="myCheck" type="checkbox" data-input="weather"   >
               <span class="slider round"></span>
             </label>
           </div>
@@ -86,7 +86,7 @@
           <div class="item-wrapper" data-quotes >
             <div class="delete-quotes" >Отключить цитаты</div>
             <label class="switch" id="quotes">
-              <input type="checkbox" data-input="quotes" checked>
+              <input class="myCheck" type="checkbox" data-input="quotes" >
               <span class="slider round"></span>
             </label>
           </div>
@@ -94,17 +94,26 @@
           <div class="item-wrapper" data-player>
             <div class="delete-player" >Отключить плеер</div>
             <label class="switch" id="audio">
-              <input type="checkbox" data-input="audio" checked>
+              <input class="myCheck" type="checkbox" data-input="audio" >
               <span class="slider round"></span>
             </label>
           </div>
             <div class="change-language-wrapper">
-          <button class="change-language-ru">ru</button>
-          <button class="change-language-en">en</button>
+          <button onclick="check()" class="change-language-ru">ru</button>
+          <button onclick="uncheck()" class="change-language-en">en</button>
             </div>
         </div>
     </div>
   </div>
+  <script>
+    // function check() {
+    //   document.getElementById("myCheck").checked = true;
+    // }
+    
+    // function uncheck() {
+    //   document.getElementById("myCheck").checked = false;
+    // }
+    </script>
   <script src="script.js"></script>
 </body>
 </html>
