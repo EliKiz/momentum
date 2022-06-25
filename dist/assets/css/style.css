@@ -306,7 +306,7 @@ body {
 .modal_content {
   /* display: none; */
   position: fixed;
-  top: 60%;
+  top: 40%;
   left: 15%;
   -webkit-transform: translateX(-30%);
   transform: translateX(-30%);
@@ -327,8 +327,10 @@ body {
 }
 .delete-weather,
 .delete-quotes,
-.delete-player { 
-  
+.delete-player,
+.delete-greetings, 
+.delete-date, 
+.delete-week { 
   color: white;
   padding: 20px 20px 20px 20px ;
   opacity: .8;

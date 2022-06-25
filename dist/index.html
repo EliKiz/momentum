@@ -74,45 +74,62 @@
     <div class="modal_content text-center">
         <button type="button" class="modal_close"><strong>&times;</strong></button>
         <div class="settings-wrapper">
-          <h3>Настройки</h3>
+          <h3 class="settings-title">Настройки</h3>
           <div class="item-wrapper"  >
-            <div class="delete-weather"  >Отключить погоду</div>
+            <div class="delete-weather"></div>
             <label class="switch" id= 'weather'>
               <input class="myCheck" type="checkbox" data-input="weather"   >
               <span class="slider round"></span>
             </label>
           </div>
           <hr>
-          <div class="item-wrapper" data-quotes >
-            <div class="delete-quotes" >Отключить цитаты</div>
+          <div class="item-wrapper"  >
+            <div class="delete-quotes" ></div>
             <label class="switch" id="quotes">
               <input class="myCheck" type="checkbox" data-input="quotes" >
               <span class="slider round"></span>
             </label>
           </div>
           <hr>
-          <div class="item-wrapper" data-player>
-            <div class="delete-player" >Отключить плеер</div>
+          <div class="item-wrapper" >
+            <div class="delete-player" ></div>
             <label class="switch" id="audio">
               <input class="myCheck" type="checkbox" data-input="audio" >
               <span class="slider round"></span>
             </label>
           </div>
+          <hr>
+          <div class="item-wrapper" >
+            <div class="delete-greetings" ></div>
+            <label class="switch" id="greetings">
+              <input class="myCheck" type="checkbox" data-input="greetings" >
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <hr>
+          <div class="item-wrapper">
+            <div class="delete-date" ></div>
+            <label class="switch" id="date">
+              <input class="myCheck" type="checkbox" data-input="date" >
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <hr>
+          <div class="item-wrapper">
+            <div class="delete-week" ></div>
+            <label class="switch" id="week">
+              <input class="myCheck" type="checkbox" data-input="week" >
+              <span class="slider round"></span>
+            </label>
+          </div>
             <div class="change-language-wrapper">
-          <button onclick="check()" class="change-language-ru">ru</button>
-          <button onclick="uncheck()" class="change-language-en">en</button>
+          <button  class="change-language-ru">ru</button>
+          <button  class="change-language-en">en</button>
             </div>
         </div>
     </div>
   </div>
   <script>
-    // function check() {
-    //   document.getElementById("myCheck").checked = true;
-    // }
-    
-    // function uncheck() {
-    //   document.getElementById("myCheck").checked = false;
-    // }
     </script>
   <script src="script.js"></script>
 </body>

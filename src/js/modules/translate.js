@@ -3,6 +3,7 @@ import sayHi from './hi';
 import {getWeather} from './weather';
 import getQuotes from './quote';
 import {showFullDate, showTime, showDate} from './timer';
+import {showItemSettings} from './settings';
 const translate = () => { 
     
     const cahngeBtn = document.querySelectorAll('.change-language-wrapper');
@@ -48,32 +49,57 @@ const translate = () => {
         const currentDate = date.toLocaleDateString('en-US');
         dateFull.textContent = currentDate;
     }
-    
-    cahngeBtn.forEach(item => { 
-        item.addEventListener('click', (event) => { 
-            const target = event.target;
-            const mainAnimation = document.querySelector('body');
 
-            
-            if( target.classList.contains('change-language-ru') ) { 
-                
+    function showtranslatePage(language = 'ru') { 
+        switch (language) { 
+            case 'ru':
                 showTime();
                 showDate();
                 sayHi();
                 showFullDate(date, '', '', 'ru');
                 getWeather('ru','Moscow',);
                 getQuotes('dataRU.json');
-            } else { 
-                
-            
+                showItemSettings('ru')
+            break;
+            case 'en':
+                showItemSettings('en');
                 showTranslateEN();
                 getWeather('en','Moscow',);
                 getQuotes('dataEN.json');
                 showtranslateData();
                 showFullDate(date, '', '', 'en');
-            }
+            break;
+        }
+    }
+
+    let languageStorage = localStorage.getItem('language');
+    console.log(languageStorage);
+
+    function setFirstLanguage() { 
+        if(languageStorage === 'ru' ) { 
+            showtranslatePage('ru');
+        } else { 
+            showtranslatePage('en');
+        }
+       
+    }
+    setFirstLanguage();
+
+    function clickBtnLanguage() { 
+        cahngeBtn.forEach(item => { 
+            item.addEventListener('click', (event) => { 
+                const target = event.target;
+                if( target.classList.contains('change-language-ru') ) { 
+                    localStorage.setItem('language', 'ru');
+                    showtranslatePage('ru');
+                } else { 
+                    localStorage.setItem('language', 'en');
+                    showtranslatePage('en');
+                }
+            });
         });
-    });
+    }
+    clickBtnLanguage();
 
     // cahngeBtn.addEventListener('click', (event) => { 
     //     const target = e.target;
