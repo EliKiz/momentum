@@ -1,1 +1,2 @@
-# stage1-tasks
+# Momentum clone 
+Clone of a famous application in the google store
