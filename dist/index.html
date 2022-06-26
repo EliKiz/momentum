@@ -69,6 +69,9 @@
         <div class="author"></div>
       </div>
     </div>
+    <div class="todo">
+      <span class="todo-trigger">todo</span>
+    </div>
   </footer>
   <div class="modal animationIn">
     <div class="modal_content text-center">
@@ -123,10 +126,27 @@
             </label>
           </div>
             <div class="change-language-wrapper">
-          <button  class="change-language-ru">ru</button>
-          <button  class="change-language-en">en</button>
+              <button  class="change-language-ru"></button>
+              <button  class="change-language-en"></button>
             </div>
         </div>
+    </div>
+  </div>
+  <div class="modal-todo animationIn">
+    <div class="modal_content-todo">
+      <button type="button" class="modal_close-todo"><strong>&times;</strong></button>
+      <div class="todo-wrapper">
+        <h3>Сегодня</h3>
+        <span>Добавить задачу</span>
+        <label class="task">
+          <input class="myTodo" type="text">
+          <button class="add-task">Добавить</button>
+        </label>
+        <div class="target">
+          <ul class="target-list"></ul>
+        </div>
+      </div>
+      
     </div>
   </div>
   <script>

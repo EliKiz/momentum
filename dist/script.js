@@ -1087,6 +1087,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_translate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/translate */ "./src/js/modules/translate.js");
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
 /* harmony import */ var _modules_settings__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/settings */ "./src/js/modules/settings.js");
+/* harmony import */ var _modules_todo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/todo */ "./src/js/modules/todo.js");
+
 
 
 
@@ -1104,10 +1106,10 @@ window.addEventListener('DOMContentLoaded', () => {
     language: 'en',
     photoSource: 'github',
     blocks: ['time', 'date', 'greeting', 'quote', 'weather', 'audio', 'todolist']
-  };
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showFullDate"])(new Date());
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showTime"])();
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_0__["showDate"])(); // timer();
+  }; // showFullDate(new Date());
+  // showTime();
+  // showDate();
+  // timer();
 
   Object(_modules_hi__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_slider__WEBPACK_IMPORTED_MODULE_2__["default"])();
@@ -1116,7 +1118,8 @@ window.addEventListener('DOMContentLoaded', () => {
   Object(_modules_audio__WEBPACK_IMPORTED_MODULE_5__["default"])();
   Object(_modules_translate__WEBPACK_IMPORTED_MODULE_6__["default"])();
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_7__["default"])();
-  Object(_modules_settings__WEBPACK_IMPORTED_MODULE_8__["default"])(state); // playList();
+  Object(_modules_settings__WEBPACK_IMPORTED_MODULE_8__["default"])(state);
+  Object(_modules_todo__WEBPACK_IMPORTED_MODULE_9__["default"])(); // playList();
   // console.log(playList());
 });
 
@@ -1421,7 +1424,8 @@ const modals = () => {
     });
   }
 
-  showModals('.settings', '.modal', '.modal .modal_close');
+  showModals('.settings-img', '.modal', '.modal .modal_close');
+  showModals('.todo', '.modal-todo', '.modal-todo .modal_close-todo');
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
@@ -1526,10 +1530,9 @@ const settings = state => {
   let weather = localStorage.getItem('weatherShow'),
       quotes = localStorage.getItem('quotesShow'),
       player = localStorage.getItem('playerShow'),
-      greeting = localStorage.getItem('greetingShow'),
+      greeting = localStorage.getItem('greetingsShow'),
       date = localStorage.getItem('dateShow'),
       week = localStorage.getItem('weekShow');
-  console.log(greeting);
 
   function toggleCheckbox(dataValue, selector, itemStorage) {
     const myCheck = document.querySelectorAll('.myCheck');
@@ -1558,11 +1561,9 @@ const settings = state => {
         switch (item.getAttribute('data-input')) {
           case 'weather':
             if (item.checked) {
-              // check();
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["showPiece"])('.weather');
               localStorage.setItem('weatherShow', true);
             } else {
-              // uncheck();
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.weather');
               localStorage.setItem('weatherShow', false);
             }
@@ -1576,8 +1577,7 @@ const settings = state => {
             } else {
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.quotes-wrapper');
               localStorage.setItem('quotesShow', false);
-            } // console.log('quotes');
-
+            }
 
             break;
 
@@ -1588,8 +1588,7 @@ const settings = state => {
             } else {
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.player');
               localStorage.setItem('playerShow', false);
-            } // console.log('audio');
-
+            }
 
             break;
 
@@ -1600,8 +1599,7 @@ const settings = state => {
             } else {
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.greeting-container');
               localStorage.setItem('greetingsShow', false);
-            } // console.log('audio');
-
+            }
 
             break;
 
@@ -1612,8 +1610,7 @@ const settings = state => {
             } else {
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.date');
               localStorage.setItem('dateShow', false);
-            } // console.log('audio');
-
+            }
 
             break;
 
@@ -1624,8 +1621,7 @@ const settings = state => {
             } else {
               Object(_weather__WEBPACK_IMPORTED_MODULE_1__["hidePiece"])('.week');
               localStorage.setItem('weekShow', false);
-            } // console.log('audio');
-
+            }
 
             break;
         }
@@ -1831,29 +1827,26 @@ __webpack_require__.r(__webpack_exports__);
 const time = document.querySelector('.time'),
       date = document.querySelector('.date');
 
-function showTime() {
+function showTime(arg) {
   const date = new Date();
-  const currentTime = date.toLocaleTimeString();
+  const currentTime = date.toLocaleTimeString(arg);
   time.innerHTML = currentTime; // setTimeout(showTime, 1000);
+} // showTime();
 
-  showDate();
-}
 
-showTime();
-
-function showDate() {
+function showDate(format) {
   const nowDate = new Date();
-  const currentDate = nowDate.toLocaleDateString();
+  const currentDate = nowDate.toLocaleDateString(format);
   date.innerHTML = currentDate;
   console.log(currentDate);
-}
-
-showDate(); // function getWeekDay(date) { 
+} // showDate();
+// function getWeekDay(date) { 
 //     let days = ['вс','пн','вт','ср','чт','пт'];
 //     return days[date.getDay()];
 // }
 // let dates = new Date(2014, 0, 2);
 // };
+
 
 function showFullDate(date, days, month) {
   let language = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'ru';
@@ -1879,6 +1872,51 @@ function showFullDate(date, days, month) {
 }
 
  // export default timer;
+
+/***/ }),
+
+/***/ "./src/js/modules/todo.js":
+/*!********************************!*\
+  !*** ./src/js/modules/todo.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const todo = () => {
+  const input = document.querySelector('.myTodo'),
+        buttonTodo = document.querySelector('.add-task'),
+        target = document.querySelector('.target'),
+        list = document.querySelector('.target-list');
+  const data = [];
+  let li;
+  input.addEventListener('change', () => {
+    li = document.createElement('li');
+    li.classList = 'list';
+    li.textContent = input.value;
+    list.append(li);
+    data.push(input.value);
+    const serializeData = JSON.stringify(data);
+    localStorage.setItem('tasks', serializeData);
+    input.value = ''; // console.log(JSON.parse(localStorage.getItem('tasks')));
+  });
+
+  function showTasks() {
+    const arr = JSON.parse(localStorage.getItem('tasks'));
+    console.log(arr);
+    arr.forEach(item => {
+      li = document.createElement('li');
+      li.classList = 'list';
+      li.textContent = item;
+      list.append(li);
+    });
+  }
+
+  showTasks();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (todo);
 
 /***/ }),
 
@@ -1933,23 +1971,27 @@ const translate = () => {
     }
   }
 
-  function showtranslateData() {
+  const showtranslateData = () => {
     const time = document.querySelector('.time'),
           dateFull = document.querySelector('.date');
+    const date = new Date();
     const currentTime = date.toLocaleTimeString('en-US');
     time.textContent = currentTime;
     const currentDate = date.toLocaleDateString('en-US');
     dateFull.textContent = currentDate;
-  }
+  };
+
+  let EnTimer, RuTimer;
 
   function showtranslatePage() {
     let language = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'ru';
 
     switch (language) {
       case 'ru':
-        Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showTime"])();
-        Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showDate"])();
+        RuTimer = setInterval(() => Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showTime"])(), 1000);
+        clearInterval(EnTimer);
         Object(_hi__WEBPACK_IMPORTED_MODULE_0__["default"])();
+        Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showDate"])();
         Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showFullDate"])(date, '', '', 'ru');
         Object(_weather__WEBPACK_IMPORTED_MODULE_1__["getWeather"])('ru', 'Moscow');
         Object(_quote__WEBPACK_IMPORTED_MODULE_2__["default"])('dataRU.json');
@@ -1957,11 +1999,13 @@ const translate = () => {
         break;
 
       case 'en':
+        EnTimer = setInterval(() => Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showTime"])('en-US'), 1000);
+        clearInterval(RuTimer);
+        Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showDate"])('en-US');
         Object(_settings__WEBPACK_IMPORTED_MODULE_4__["showItemSettings"])('en');
         showTranslateEN();
         Object(_weather__WEBPACK_IMPORTED_MODULE_1__["getWeather"])('en', 'Moscow');
         Object(_quote__WEBPACK_IMPORTED_MODULE_2__["default"])('dataEN.json');
-        showtranslateData();
         Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showFullDate"])(date, '', '', 'en');
         break;
     }
@@ -1990,7 +2034,7 @@ const translate = () => {
           showtranslatePage('ru');
         } else {
           localStorage.setItem('language', 'en');
-          showtranslatePage('en');
+          showtranslatePage('en'); // setInterval(showtranslateData,1000);
         }
       });
     });

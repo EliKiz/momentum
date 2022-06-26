@@ -5,23 +5,23 @@
         
 
     
-    function showTime() { 
+    function showTime(arg) { 
         const date = new Date();
-        const currentTime = date.toLocaleTimeString();
+        const currentTime = date.toLocaleTimeString(arg);
         time.innerHTML = currentTime;
         // setTimeout(showTime, 1000);
-        showDate();
+        
     }
-    showTime();
+    // showTime();
 
-    function showDate() { 
+    function showDate(format) { 
         const nowDate = new Date();
-        const currentDate = nowDate.toLocaleDateString();
+        const currentDate = nowDate.toLocaleDateString(format);
         date.innerHTML = currentDate;
         console.log(currentDate);
 
     }
-    showDate();
+    // showDate();
     // function getWeekDay(date) { 
     //     let days = ['вс','пн','вт','ср','чт','пт'];
     //     return days[date.getDay()];

@@ -8,10 +8,9 @@ const settings = (state) => {
     let weather = localStorage.getItem('weatherShow'),
         quotes = localStorage.getItem('quotesShow'),
         player = localStorage.getItem('playerShow'),
-        greeting = localStorage.getItem('greetingShow'),
+        greeting = localStorage.getItem('greetingsShow'),
         date = localStorage.getItem('dateShow'),
         week = localStorage.getItem('weekShow');
-        console.log(greeting);
 
     function toggleCheckbox(dataValue, selector, itemStorage){ 
         const myCheck = document.querySelectorAll('.myCheck');
@@ -43,11 +42,9 @@ const settings = (state) => {
                     switch(item.getAttribute('data-input')) { 
                         case 'weather' : 
                             if(item.checked  ) { 
-                                // check();
                                 showPiece('.weather');
                                 localStorage.setItem('weatherShow', true);
                             }else{ 
-                                // uncheck();
                                 hidePiece('.weather');
                                 localStorage.setItem('weatherShow', false);
                             }
@@ -60,7 +57,6 @@ const settings = (state) => {
                                 hidePiece('.quotes-wrapper');
                                 localStorage.setItem('quotesShow', false);
                             }
-                            // console.log('quotes');
                             break;
                         case 'audio' : 
                             if(item.checked) { 
@@ -70,7 +66,6 @@ const settings = (state) => {
                                 hidePiece('.player');
                                 localStorage.setItem('playerShow', false);
                             }
-                            // console.log('audio');
                             break;
                         case 'greetings' : 
                             if(item.checked) { 
@@ -80,7 +75,6 @@ const settings = (state) => {
                                 hidePiece('.greeting-container');
                                 localStorage.setItem('greetingsShow', false);
                             }
-                            // console.log('audio');
                             break;
                         case 'date' : 
                             if(item.checked) { 
@@ -90,7 +84,6 @@ const settings = (state) => {
                                 hidePiece('.date');
                                 localStorage.setItem('dateShow', false);
                             }
-                            // console.log('audio');
                             break;
                         case 'week' : 
                             if(item.checked) { 
@@ -100,7 +93,6 @@ const settings = (state) => {
                                 hidePiece('.week');
                                 localStorage.setItem('weekShow', false);
                             }
-                            // console.log('audio');
                             break;
                     }
                   });

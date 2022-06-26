@@ -39,34 +39,42 @@ const translate = () => {
         }
     }
     
-    function showtranslateData() { 
+    const showtranslateData = () =>  { 
        const time = document.querySelector('.time'),
         dateFull = document.querySelector('.date');
         
+        const date = new Date();
         const currentTime = date.toLocaleTimeString('en-US');
         time.textContent = currentTime;
         
         const currentDate = date.toLocaleDateString('en-US');
         dateFull.textContent = currentDate;
-    }
+        
+    };
+
+    let EnTimer,
+        RuTimer;
 
     function showtranslatePage(language = 'ru') { 
         switch (language) { 
             case 'ru':
-                showTime();
-                showDate();
+                RuTimer = setInterval(()=> showTime(), 1000);
+                clearInterval(EnTimer);
                 sayHi();
+                showDate();
                 showFullDate(date, '', '', 'ru');
                 getWeather('ru','Moscow',);
                 getQuotes('dataRU.json');
-                showItemSettings('ru')
+                showItemSettings('ru');
             break;
             case 'en':
+                EnTimer = setInterval(()=> showTime('en-US'), 1000);
+                clearInterval(RuTimer);
+                showDate('en-US');
                 showItemSettings('en');
                 showTranslateEN();
                 getWeather('en','Moscow',);
                 getQuotes('dataEN.json');
-                showtranslateData();
                 showFullDate(date, '', '', 'en');
             break;
         }
@@ -95,6 +103,7 @@ const translate = () => {
                 } else { 
                     localStorage.setItem('language', 'en');
                     showtranslatePage('en');
+                    // setInterval(showtranslateData,1000);
                 }
             });
         });

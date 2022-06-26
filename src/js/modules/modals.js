@@ -34,7 +34,8 @@ const modals = () =>  {
 
     }
 
-    showModals('.settings', '.modal', '.modal .modal_close');
+    showModals('.settings-img', '.modal', '.modal .modal_close');
+    showModals('.todo', '.modal-todo', '.modal-todo .modal_close-todo');
 
 };
 

@@ -7,6 +7,7 @@ import audio from './modules/audio';
 import translate from './modules/translate';
 import modals from './modules/modals';
 import settings from './modules/settings';
+import todo from './modules/todo';
 // import playList from './modules/playList';
 
 window.addEventListener('DOMContentLoaded', () => { 
@@ -17,10 +18,10 @@ window.addEventListener('DOMContentLoaded', () => {
         blocks: ['time', 'date','greeting', 'quote', 'weather', 'audio', 'todolist']
       };
     
+    // showFullDate(new Date());
+    // showTime();
+    // showDate();
 
-    showFullDate(new Date());
-    showTime();
-    showDate();
     // timer();
     hi();
     slider();
@@ -30,6 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
     translate();
     modals();
     settings(state);
+    todo();
     // playList();
     // console.log(playList());
 });

@@ -271,24 +271,36 @@ body {
 
 .footer {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  /* align-items: center; */
   width: 100%;
   height: 30vh;
   min-height: 160px;  
   padding: 20px;
- position: relative;
+
 }
 .settings {
-  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+
+}
+.settings-img { 
+  display: flex;
   cursor:pointer;
-  width: 40px;
-  height: 40px;
-  bottom: 5vh;
-  left: 5vh;
-  flex-direction: column;
- 
+  width: 100%;
+}
+.quotes-wrapper{ 
+  /* flex-basis: auto; */
+}
+.todo{ 
+  display: flex;
+  align-items: flex-end;
+}
+.todo-trigger { 
+  font-size: 22px;
+  display: block;
+  cursor:pointer;
 }
 .modal { 
   display: none;
@@ -315,7 +327,8 @@ body {
   border-radius: 15px;
 }
 
-.modal_close {
+.modal_close,
+.modal_close-todo {
   position: absolute;
   top: -2.2rem;
   right: -3rem;
@@ -323,7 +336,57 @@ body {
   color: #ffffff;
   border: none;
   background: transparent;
- cursor: pointer;
+  cursor: pointer;
+}
+.modal_close-todo { 
+  right: 23rem;
+}
+.modal-todo  { 
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal_content-todo {
+  /* display: none; */
+  position: fixed;
+  top: 70%;
+  right: 6%;
+  -webkit-transform: translateX(-30%);
+  transform: translateX(6%);
+  width: 20rem;
+  background-color: #292424;
+  border-radius: 15px;
+}
+.todo-wrapper { 
+  padding: 10px;
+}
+.task { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.myTodo { 
+  margin: 5px 0 5px 0;
+  border-radius: 5px;
+  width: 100%;
+}
+.add-task { 
+  display: flex;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 25%;
+  justify-content: center;
+  
+}
+.list { 
+  list-style-type:none;
+  text-align: start;
+  padding: 5px 0 10px 20px;
 }
 .delete-weather,
 .delete-quotes,
@@ -354,10 +417,10 @@ body {
 
 
 
-.settings-img { 
+/* .settings-img { 
   width: 40px;
   height: 40px;
-}
+} */
 
 .change-language-wrapper { 
   
@@ -371,6 +434,18 @@ body {
   width: 25px;
   height: auto;
   cursor: pointer;
+}
+.change-language-ru { 
+  background: url("../img/russia.png") center center/ cover no-repeat ;
+  width: 25px;
+  height: 25px;
+  border: none;
+}
+.change-language-en{ 
+  background: url("../img/united-states.png") center center/ cover no-repeat ;
+  width: 25px;
+  height: 25px;
+  border: none;
 }
 .quotes-wrapper { 
   display: flex;
