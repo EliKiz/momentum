@@ -85,9 +85,9 @@ const translate = () => {
 
     function setFirstLanguage() { 
         if(languageStorage === 'ru' ) { 
-            showtranslatePage('ru');
+            // showtranslatePage('ru');
         } else { 
-            showtranslatePage('en');
+            // showtranslatePage('en');
         }
        
     }

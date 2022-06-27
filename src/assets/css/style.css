@@ -354,7 +354,7 @@ body {
 .modal_content-todo {
   /* display: none; */
   position: fixed;
-  top: 70%;
+  top: 60%;
   right: 6%;
   -webkit-transform: translateX(-30%);
   transform: translateX(6%);
@@ -384,9 +384,24 @@ body {
   
 }
 .list { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   list-style-type:none;
   text-align: start;
-  padding: 5px 0 10px 20px;
+  margin: 5px 0 10px 20px;
+  height: auto;
+}
+.list-close{ 
+  cursor: pointer;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  background-image: url('../img/icons8-delete.svg');
+}
+.list-label { 
+  max-width: auto;
+  overflow: hidden;
 }
 .delete-weather,
 .delete-quotes,
