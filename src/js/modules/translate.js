@@ -4,6 +4,7 @@ import {getWeather} from './weather';
 import getQuotes from './quote';
 import {showFullDate, showTime, showDate} from './timer';
 import {showItemSettings} from './settings';
+import todo from './todo';
 const translate = () => { 
     
     const cahngeBtn = document.querySelectorAll('.change-language-wrapper');
@@ -76,6 +77,7 @@ const translate = () => {
                 getWeather('en','Moscow',);
                 getQuotes('dataEN.json');
                 showFullDate(date, '', '', 'en');
+                todo('en')
             break;
         }
     }
@@ -85,9 +87,9 @@ const translate = () => {
 
     function setFirstLanguage() { 
         if(languageStorage === 'ru' ) { 
-            // showtranslatePage('ru');
+            showtranslatePage('ru');
         } else { 
-            // showtranslatePage('en');
+            showtranslatePage('en');
         }
        
     }

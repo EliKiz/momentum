@@ -1884,16 +1884,31 @@ function showFullDate(date, days, month) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const todo = () => {
+const todo = function () {
+  let language = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'ru';
   const input = document.querySelector('.myTodo'),
-        buttonTodo = document.querySelector('.add-task'),
         targets = document.querySelector('.target'),
-        list = document.querySelector('.target-list');
+        list = document.querySelector('.target-list'),
+        title = document.querySelector('.todo-title'),
+        subtitle = document.querySelector('.todo-subtitle'); // const labelList = list.querySelectorAll('.list-label');  
+
   let data = [];
 
   if (localStorage.getItem('tasks')) {
     data = JSON.parse(localStorage.getItem('tasks'));
     showTasks();
+  }
+
+  switch (language) {
+    case 'ru':
+      title.textContent = 'Сегодня';
+      subtitle.textContent = 'Добавить задачу';
+      break;
+
+    case 'en':
+      title.textContent = 'Today';
+      subtitle.textContent = 'Add task';
+      break;
   }
 
   function setValue() {
@@ -1922,20 +1937,30 @@ const todo = () => {
     }
 
     data.forEach((item, i) => {
-      displayMessage += `
-            <li  class = 'list'>
-                <input  type='checkbox' id = 'item_${i}' ${item.checked ? 'checked' : ''}>
-                <label class='list-label'  for = 'item_${i}'>${item.todo}</label>
-                <div class = 'list-close' id = '${item.id}' ></div>
-            </li>
-            `;
+      if (!item.checked) {
+        displayMessage += `
+                <li  class = 'list'>
+                    <input class='list-input' type='checkbox' id = 'item_${i}' ${item.checked ? 'checked' : ''}>
+                    <label class='list-label' id= 'label_${i}' for = 'item_${i}'>${item.todo}</label>
+                    <div class = 'list-close' id = '${item.id}' ></div>
+                </li>
+                `;
+      } else {
+        displayMessage += `
+                <li  class = 'list'>
+                    <input class='list-input' type='checkbox' id = 'item_${i}' ${item.checked ? 'checked' : ''}>
+                    <label class='list-label list-label-line' id= 'label_${i}' for = 'item_${i}'>${item.todo}</label>
+                    <div class = 'list-close' id = '${item.id}' ></div>
+                </li>
+                `;
+      }
+
       list.innerHTML = displayMessage;
     });
-    setCheckbox();
   }
 
   function setCheckbox() {
-    targets.addEventListener('change', event => {
+    list.addEventListener('change', event => {
       let idInput = event.target.getAttribute('id');
       let forLabel = list.querySelector('[for=' + idInput + ']');
       let valueLabel = forLabel.innerHTML;
@@ -1945,26 +1970,35 @@ const todo = () => {
           localStorage.setItem('tasks', JSON.stringify(data));
         }
       });
-      deleteItem();
     });
   }
 
   setCheckbox();
 
-  function deleteItem() {
-    const listClose = document.querySelector('.list-close');
+  function deleteTasks() {
     list.addEventListener('click', event => {
+      let labelList = list.querySelectorAll('.list-label');
       const target = event.target;
       data.forEach((item, index) => {
+        // console.log(!item.checked )
         if (target.getAttribute('id') === item.id) {
           data.splice(index, 1);
-          console.log(data);
+          localStorage.setItem('tasks', JSON.stringify(data));
+          showTasks();
         }
       });
-      localStorage.setItem('tasks', JSON.stringify(data));
-      showTasks();
+      labelList.forEach(list => {
+        console.log(target.type);
+
+        if (target && target.getAttribute('id') === list.getAttribute('id')) {
+          console.log('done');
+          list.classList.toggle('list-label-line'); // setCheckbox();
+        }
+      });
     });
   }
+
+  deleteTasks();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (todo);
@@ -1985,6 +2019,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _quote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./quote */ "./src/js/modules/quote.js");
 /* harmony import */ var _timer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./timer */ "./src/js/modules/timer.js");
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./settings */ "./src/js/modules/settings.js");
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./todo */ "./src/js/modules/todo.js");
+
 
 
 
@@ -2058,6 +2094,7 @@ const translate = () => {
         Object(_weather__WEBPACK_IMPORTED_MODULE_1__["getWeather"])('en', 'Moscow');
         Object(_quote__WEBPACK_IMPORTED_MODULE_2__["default"])('dataEN.json');
         Object(_timer__WEBPACK_IMPORTED_MODULE_3__["showFullDate"])(date, '', '', 'en');
+        Object(_todo__WEBPACK_IMPORTED_MODULE_5__["default"])('en');
         break;
     }
   }
@@ -2066,8 +2103,10 @@ const translate = () => {
   console.log(languageStorage);
 
   function setFirstLanguage() {
-    if (languageStorage === 'ru') {// showtranslatePage('ru');
-    } else {// showtranslatePage('en');
+    if (languageStorage === 'ru') {
+      showtranslatePage('ru');
+    } else {
+      showtranslatePage('en');
     }
   }
 
