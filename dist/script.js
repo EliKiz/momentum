@@ -1918,11 +1918,12 @@ const todo = function () {
         checked: false,
         id: ''
       };
+      console.log(newTodo);
       const random = Math.random() * 15.75;
       newTodo.id = random.toFixed(2);
       data.push(newTodo);
-      localStorage.setItem('tasks', JSON.stringify(data));
-      input.value = '';
+      localStorage.setItem('tasks', JSON.stringify(data)); // input.value = '';
+
       showTasks();
     });
   }
@@ -1988,11 +1989,11 @@ const todo = function () {
         }
       });
       labelList.forEach(list => {
-        console.log(target.type);
-
         if (target && target.getAttribute('id') === list.getAttribute('id')) {
-          console.log('done');
-          list.classList.toggle('list-label-line'); // setCheckbox();
+          list.classList.toggle('list-label-line');
+          console.log('done'); // setCheckbox();
+        } else {
+          console.log('not done');
         }
       });
     });

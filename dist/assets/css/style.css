@@ -380,10 +380,14 @@ body {
 .add-task { 
   display: flex;
   cursor: pointer;
-  border-radius: 5px;
-  width: 25%;
+  border-radius: 20px;
+  margin-left: 5px;
   justify-content: center;
-  /* margin-bottom: 5px; */
+ 
+}
+.add-task-img{ 
+  width: 100%;
+  height: 100%;
 }
 .list { 
   display: flex;
@@ -616,4 +620,32 @@ input:checked + .slider:before {
     font-size: 32px;
     padding: 5px;
   }
+}
+@media (max-width: 576px) { 
+  .modal_content  { 
+    width: 16rem;
+    left: 20%;
+    top: 30%;
+  }
+  .item-wrapper-checkbox { 
+    padding: 5px 20px 5px 20px;
+  }
+  .item-wrapper { 
+    margin: 5px 0;
+    flex-direction: column;
+  }
+  .modal_content-todo { 
+    width: 17rem;
+    right: 10%;
+  }
+  .modal_close-todo { 
+    font-size: 2.5rem;
+    right: 18rem;
+    top: -1.2rem;
+  }
+  .modal-close { 
+    top: -1rem;
+    right: -3rem;
+  }
+  
 }

@@ -79,7 +79,7 @@
         <div class="settings-wrapper">
           <h3 class="settings-title">Настройки</h3>
           <div class="item-wrapper"  >
-            <div class="delete-weather"></div>
+            <div class="item-wrapper-checkbox delete-weather"></div>
             <label class="switch" id= 'weather'>
               <input class="myCheck" type="checkbox" data-input="weather"   >
               <span class="slider round"></span>
@@ -87,7 +87,7 @@
           </div>
           <hr>
           <div class="item-wrapper"  >
-            <div class="delete-quotes" ></div>
+            <div class="item-wrapper-checkbox delete-quotes" ></div>
             <label class="switch" id="quotes">
               <input class="myCheck" type="checkbox" data-input="quotes" >
               <span class="slider round"></span>
@@ -95,7 +95,7 @@
           </div>
           <hr>
           <div class="item-wrapper" >
-            <div class="delete-player" ></div>
+            <div class="item-wrapper-checkbox delete-player" ></div>
             <label class="switch" id="audio">
               <input class="myCheck" type="checkbox" data-input="audio" >
               <span class="slider round"></span>
@@ -103,7 +103,7 @@
           </div>
           <hr>
           <div class="item-wrapper" >
-            <div class="delete-greetings" ></div>
+            <div class="item-wrapper-checkbox delete-greetings" ></div>
             <label class="switch" id="greetings">
               <input class="myCheck" type="checkbox" data-input="greetings" >
               <span class="slider round"></span>
@@ -111,7 +111,7 @@
           </div>
           <hr>
           <div class="item-wrapper">
-            <div class="delete-date" ></div>
+            <div class="item-wrapper-checkbox delete-date" ></div>
             <label class="switch" id="date">
               <input class="myCheck" type="checkbox" data-input="date" >
               <span class="slider round"></span>
@@ -119,7 +119,7 @@
           </div>
           <hr>
           <div class="item-wrapper">
-            <div class="delete-week" ></div>
+            <div class="item-wrapper-checkbox delete-week" ></div>
             <label class="switch" id="week">
               <input class="myCheck" type="checkbox" data-input="week" >
               <span class="slider round"></span>
@@ -139,8 +139,10 @@
         <h3 class="todo-title"></h3>
         <span class="todo-subtitle"></span>
         <label class="task">
-          <input class="myTodo" type="text" placeholder="Ваша задача">
-          <button class="add-task">Добавить</button>
+          <input class="myTodo" type="text" placeholder="Enter">
+          <button class="add-task">
+            <img class="add-task-img" src="/assets/img/plus.png" alt="add">
+          </button>
         </label>
         <div class="target">
           <ul class="target-list"></ul>
